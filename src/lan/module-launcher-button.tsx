@@ -7,9 +7,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { LoaderCircle, Play, Square, TriangleAlert } from "lucide-react";
+import { Module } from "./module-launcher-toolbar";
 
 type ModuleLauncherButtonProps = {
-  module: any;
+  module: Module;
   onClick: () => void;
   moduleName: "Monitor" | "Probe";
   monitorIsRunning?: boolean;
@@ -30,9 +31,9 @@ export default function ModuleLauncherButton({
             size="sm"
             className="h-8"
             variant={module.isRunning ? "destructive" : "outline"}
-            disabled={module.isLoading}
+            disabled={module.isPending}
           >
-            {module.isLoading ? (
+            {module.isPending ? (
               <>
                 <LoaderCircle className="h-4 w-4 animate-spin" />
                 <Separator orientation="vertical" className="mx-2 h-4" />
@@ -66,7 +67,7 @@ export default function ModuleLauncherButton({
               <p>Actively probes the network by periodically</p>
               <p>sending ARP requests to the entire subnet.</p>
               {module.isRunning && !monitorIsRunning ? (
-                <div className="text-warning mt-1 flex items-center">
+                <div className="mt-1 flex items-center text-warning">
                   <TriangleAlert className="mr-1 h-4 w-4" />
                   <p>Start the Monitor module to begin discovering hosts.</p>
                 </div>

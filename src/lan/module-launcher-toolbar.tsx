@@ -1,8 +1,16 @@
 import ModuleLauncherButton from "./module-launcher-button";
 
+export type Module = {
+  isRunning: boolean;
+  isPending: boolean;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+  setRunning: (running: boolean) => void;
+};
+
 type ModuleLauncherToolbarProps = {
-  monitor: any;
-  probe: any;
+  monitor: Module;
+  probe: Module;
 };
 
 export default function ModuleLauncherToolbar({
