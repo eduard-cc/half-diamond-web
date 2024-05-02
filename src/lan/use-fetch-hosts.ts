@@ -1,69 +1,14 @@
 import { Host } from "./types";
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
+import useModule from "./use-module";
 
 export default function useFetchHosts() {
   const [data, setData] = useState<Host[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const createModule = (name: string) => {
-    const [isRunning, setIsRunning] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    return {
-      isRunning,
-      isLoading,
-      start: () => {
-        setIsLoading(true);
-        setTimeout(async () => {
-          try {
-            const response = await fetch(
-              `http://localhost:8000/${name}/start`,
-              {
-                method: "POST",
-              },
-            );
-            if (!response.ok) {
-              toast.error(`${capitalizeModule(name)} module failed to start.`);
-            }
-            setIsRunning(true);
-            toast.success(`${capitalizeModule(name)} module is now running.`);
-          } catch (error) {
-            toast.error(`${capitalizeModule(name)} module failed to start.`, {
-              description: "API is not responding.",
-            });
-          } finally {
-            setIsLoading(false);
-          }
-        }, 1000);
-      },
-      stop: async () => {
-        setIsLoading(true);
-        try {
-          const response = await fetch(`http://localhost:8000/${name}/stop`, {
-            method: "POST",
-          });
-          if (!response.ok) {
-            toast.error(`${capitalizeModule(name)} module failed to stop.`);
-          }
-          setIsRunning(false);
-          toast.success(`${capitalizeModule(name)} module has been stopped.`);
-        } catch (error) {
-          toast.error(`${capitalizeModule(name)} module failed to stop.`, {
-            description: "API is not responding.",
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      },
-      setRunning: (running: boolean) => {
-        setIsRunning(running);
-      },
-    };
-  };
-
-  const monitor = createModule("monitor");
-  const probe = createModule("probe");
+  const monitor = useModule("monitor");
+  const probe = useModule("probe");
 
   useEffect(() => {
     const fetchHosts = async () => {
@@ -96,7 +41,7 @@ export default function useFetchHosts() {
     const socket = new WebSocket("ws://localhost:8000/monitor/ws");
 
     socket.onopen = () => {
-      setLoading(false);
+      setIsPending(false);
     };
 
     socket.onmessage = (event) => {
@@ -122,13 +67,9 @@ export default function useFetchHosts() {
     }
   }, [monitor.isRunning]);
 
-  const capitalizeModule = (module: string) => {
-    return module.charAt(0).toUpperCase() + module.slice(1);
-  };
-
   return {
     data,
-    loading,
+    isPending,
     error,
     monitor,
     probe,
