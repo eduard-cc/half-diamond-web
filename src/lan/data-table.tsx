@@ -21,15 +21,21 @@ import { useHostCount } from "./use-host-count";
 import TaskLauncherToolbar from "./task-launcher-toolbar";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
+import { toast } from "sonner";
+import { CircleAlert } from "lucide-react";
 
 type DataTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isPending: boolean;
+  error: Error | null;
 };
 
 export function DataTable<TData extends Host, TValue>({
   columns,
   data,
+  isPending,
+  error,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const { setHostCount } = useHostCount();
@@ -85,6 +91,10 @@ export function DataTable<TData extends Host, TValue>({
     );
   }, [columnVisibility]);
 
+  if (error) {
+    toast.error("Failed to establish connection to API.");
+  }
+
   return (
     <>
       <TaskLauncherToolbar targetIps={getTargetIps()} />
@@ -110,7 +120,30 @@ export function DataTable<TData extends Host, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {error ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center font-semibold"
+                >
+                  <div className="flex items-center justify-center text-destructive">
+                    <p>
+                      <CircleAlert className="mr-1 h-4 w-4" />
+                    </p>
+                    <span>Failed to establish connection to API.</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : isPending ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Loading...
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
