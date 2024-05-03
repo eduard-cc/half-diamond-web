@@ -29,6 +29,7 @@ type DataTableProps<TData extends Host, TValue> = {
   data: TData[];
   isPending: boolean;
   error: Error | null;
+  children: React.ReactNode;
 };
 
 export function DataTable<TData extends Host, TValue>({
@@ -36,6 +37,7 @@ export function DataTable<TData extends Host, TValue>({
   data,
   isPending,
   error,
+  children,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const { setHostCount } = useHostCount();
@@ -97,8 +99,13 @@ export function DataTable<TData extends Host, TValue>({
 
   return (
     <>
-      <TaskLauncherToolbar targetIps={getTargetIps()} />
-      <DataTableColumnToggle table={table} />
+      <div className="mb-2 flex justify-between">
+        <div className="flex gap-2">
+          {children}
+          <TaskLauncherToolbar targetIps={getTargetIps()} />
+        </div>
+        <DataTableColumnToggle table={table} />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

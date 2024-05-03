@@ -15,7 +15,7 @@ export default function TaskLauncherToolbar({
   } = useScanPorts();
 
   return (
-    <div className="mb-2 flex gap-2">
+    <div className="flex gap-2">
       <TaskLauncherButton
         title="Detect OS"
         onLaunch={(targetIps) => {

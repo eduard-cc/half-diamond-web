@@ -8,13 +8,14 @@ export default function Hosts() {
 
   return (
     <div className="container mx-auto py-2">
-      <ModuleLauncherToolbar monitor={monitor} probe={probe} />
       <DataTable
         columns={columns}
         data={data}
         isPending={isPending}
         error={error}
-      />
+      >
+        <ModuleLauncherToolbar monitor={monitor} probe={probe} />
+      </DataTable>
     </div>
   );
 }

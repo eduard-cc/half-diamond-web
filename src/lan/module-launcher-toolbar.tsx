@@ -34,7 +34,7 @@ export default function ModuleLauncherToolbar({
   };
 
   return (
-    <div className="flex gap-2">
+    <>
       <ModuleLauncherButton
         module={monitor}
         onClick={handleMonitorClick}
@@ -46,6 +46,6 @@ export default function ModuleLauncherToolbar({
         moduleName="Probe"
         monitorIsRunning={monitor.isRunning}
       />
-    </div>
+    </>
   );
 }
