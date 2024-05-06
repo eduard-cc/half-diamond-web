@@ -20,3 +20,24 @@ export type Port = {
   version?: string;
   conf?: string;
 };
+
+export type Event = {
+  type: EventType;
+  data: Host;
+};
+
+export enum PortScanType {
+  SYN = "SYN",
+  TCP = "TCP",
+  UDP = "UDP",
+}
+
+export enum EventType {
+  HOST_NEW = "host.new",
+  HOST_SEEN = "host.seen",
+  HOST_CONNECTED = "host.connected",
+  HOST_DISCONNECTED = "host.disconnected",
+  SCAN_TCP = "scan.tcp",
+  SCAN_SYN = "scan.syn",
+  SCAN_UDP = "scan.udp",
+}
