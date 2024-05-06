@@ -1,4 +1,4 @@
-import { Host } from "./types";
+import { EventType, Host, Event } from "./types";
 import { useState, useEffect } from "react";
 import useModule from "./use-module";
 
@@ -44,9 +44,28 @@ export default function useFetchHosts() {
       setIsPending(false);
     };
 
-    socket.onmessage = (event) => {
-      const hosts: Host[] = JSON.parse(event.data);
-      setData(hosts);
+    socket.onmessage = (e) => {
+      console.log(e.data);
+      const event: Event = JSON.parse(e.data);
+      console.log(event.data);
+      console.log(event.type);
+      if (event.type === EventType.HOST_NEW) {
+        setData((prevData) => [...prevData, event.data]);
+      } else if (
+        event.type === EventType.HOST_SEEN ||
+        event.type === EventType.HOST_CONNECTED ||
+        event.type === EventType.HOST_DISCONNECTED
+      ) {
+        setData((prevData) => {
+          return prevData.map((host) => {
+            if (host.mac === event.data.mac) {
+              return event.data;
+            } else {
+              return host;
+            }
+          });
+        });
+      }
     };
 
     socket.onerror = (event) => {
