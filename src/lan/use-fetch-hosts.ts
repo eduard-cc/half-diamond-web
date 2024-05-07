@@ -71,6 +71,8 @@ export default function useFetchHosts() {
               case EventType.SCAN_TCP:
               case EventType.SCAN_UDP:
                 return updateHost(host, { open_ports: event.data.open_ports });
+              case EventType.OS_DETECTED:
+                return updateHost(host, { os: event.data.os });
               default:
                 return host;
             }

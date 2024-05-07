@@ -40,4 +40,5 @@ export enum EventType {
   SCAN_TCP = "scan.tcp",
   SCAN_SYN = "scan.syn",
   SCAN_UDP = "scan.udp",
+  OS_DETECTED = "os.detected",
 }
