@@ -1,9 +1,10 @@
+import { useToast } from "@/components/ui/use-toast";
 import { useState, useCallback } from "react";
-import { toast } from "sonner";
 
 export default function useDetectOs() {
   const [data, setData] = useState<Record<string, string> | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const { toast } = useToast();
 
   const detectOs = useCallback(async (targetIps: string[]) => {
     setIsPending(true);
@@ -15,10 +16,19 @@ export default function useDetectOs() {
         },
         body: JSON.stringify(targetIps),
       });
+      if (!response.ok) {
+        toast({
+          variant: "destructive",
+          title: "Something went wrong while detecting OS.",
+        });
+      }
       const os = await response.json();
       setData(os);
     } catch (error) {
-      toast.error("Something went wrong while detecting OS.");
+      toast({
+        variant: "destructive",
+        title: "Failed to establish connection to API.",
+      });
     } finally {
       setIsPending(false);
     }

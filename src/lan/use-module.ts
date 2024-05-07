@@ -1,9 +1,10 @@
+import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
-import { toast } from "sonner";
 
 export default function useModule(name: "monitor" | "probe") {
   const [isRunning, setIsRunning] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const { toast } = useToast();
 
   const start = (): Promise<void> => {
     setIsPending(true);
@@ -14,13 +15,21 @@ export default function useModule(name: "monitor" | "probe") {
             method: "POST",
           });
           if (!response.ok) {
-            toast.error(`${capitalizeModule(name)} module failed to start.`);
+            toast({
+              variant: "destructive",
+              title: `${capitalizeModule(name)} module failed to start.`,
+            });
           }
           setIsRunning(true);
-          toast.success(`${capitalizeModule(name)} module is now running.`);
+          toast({
+            title: `${capitalizeModule(name)} module is now running.`,
+          });
           resolve();
         } catch (error) {
-          toast.error("Failed to establish connection to API.");
+          toast({
+            variant: "destructive",
+            title: "Failed to establish connection to API.",
+          });
           reject(error);
         } finally {
           setIsPending(false);
@@ -36,13 +45,19 @@ export default function useModule(name: "monitor" | "probe") {
         method: "POST",
       });
       if (!response.ok) {
-        toast.error(`${capitalizeModule(name)} module failed to stop.`);
+        toast({
+          variant: "destructive",
+          title: `${capitalizeModule(name)} module failed to stop.`,
+        });
       }
       setIsRunning(false);
-      toast.success(`${capitalizeModule(name)} module has been stopped.`);
+      toast({
+        title: `${capitalizeModule(name)} module has been stopped.`,
+      });
     } catch (error) {
-      toast.error(`${capitalizeModule(name)} module failed to stop.`, {
-        description: "API is not responding.",
+      toast({
+        variant: "destructive",
+        title: "Failed to establish connection to API.",
       });
     } finally {
       setIsPending(false);

@@ -22,9 +22,9 @@ import TaskLauncherToolbar from "./task-launcher-toolbar";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
 import { CircleAlert } from "lucide-react";
-import { toast } from "sonner";
 import { Module } from "./module-launcher-toolbar";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 
 type DataTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -43,6 +43,7 @@ export function DataTable<TData extends Host, TValue>({
   children,
   monitor,
 }: DataTableProps<TData, TValue>) {
+  const { toast } = useToast();
   const [rowSelection, setRowSelection] = useState({});
   const { setHostCount } = useHostCount();
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
@@ -88,7 +89,10 @@ export function DataTable<TData extends Host, TValue>({
   }, [columnVisibility]);
 
   if (error) {
-    toast.error("Failed to establish connection to API.");
+    toast({
+      variant: "destructive",
+      title: "Failed to establish connection to API.",
+    });
   }
 
   return (

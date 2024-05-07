@@ -1,10 +1,11 @@
 import { useState, useCallback } from "react";
 import { PortScanType } from "./types";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function useScanPorts() {
   const [data, setData] = useState<Record<string, string> | null>(null);
   const [isPending, setIsPending] = useState(false);
+  const { toast } = useToast();
 
   const scanPorts = useCallback(
     async (targetIps: string[], scanType: PortScanType) => {
@@ -20,10 +21,19 @@ export default function useScanPorts() {
             body: JSON.stringify(targetIps),
           },
         );
+        if (!response.ok) {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong while scanning ports.",
+          });
+        }
         const openPorts = await response.json();
         setData(openPorts);
       } catch (error) {
-        toast.error("Something went wrong while scanning ports.");
+        toast({
+          variant: "destructive",
+          title: "Failed to establish connection to API.",
+        });
       } finally {
         setIsPending(false);
       }
