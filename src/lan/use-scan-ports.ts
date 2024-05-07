@@ -3,12 +3,12 @@ import { PortScanType } from "./types";
 
 export default function useScanPorts() {
   const [data, setData] = useState<Record<string, string> | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const scanPorts = useCallback(
     async (targetIps: string[], scanType: PortScanType) => {
-      setLoading(true);
+      setIsPending(true);
       setError(null);
       try {
         const response = await fetch(
@@ -28,11 +28,11 @@ export default function useScanPorts() {
         console.error(error);
         setError(error as Error);
       } finally {
-        setLoading(false);
+        setIsPending(false);
       }
     },
     [],
   );
 
-  return { loading, error, data, scanPorts };
+  return { isPending, error, data, scanPorts };
 }

@@ -8,9 +8,9 @@ export default function TaskLauncherToolbar({
 }: {
   targetIps: string[];
 }) {
-  const { loading: osLoading, error: osError, detectOs } = useDetectOs();
+  const { isPending: osIsPending, error: osError, detectOs } = useDetectOs();
   const {
-    loading: portsLoading,
+    isPending: portsIsPending,
     error: portsError,
     scanPorts,
   } = useScanPorts();
@@ -23,7 +23,7 @@ export default function TaskLauncherToolbar({
           detectOs(targetIps);
         }}
         targetIps={targetIps}
-        loading={osLoading}
+        pending={osIsPending}
         loadingText="Detecting OS..."
       />
       <TaskLauncherButton
@@ -32,7 +32,7 @@ export default function TaskLauncherToolbar({
           scanPorts(targetIps, PortScanType.SYN);
         }}
         targetIps={targetIps}
-        loading={portsLoading}
+        pending={portsIsPending}
         loadingText="Scanning ports..."
       />
     </div>

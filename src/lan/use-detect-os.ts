@@ -2,11 +2,11 @@ import { useState, useCallback } from "react";
 
 export default function useDetectOs() {
   const [data, setData] = useState<Record<string, string> | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   const detectOs = useCallback(async (targetIps: string[]) => {
-    setLoading(true);
+    setIsPending(true);
     setError(null);
     try {
       const response = await fetch("http://localhost:8000/os", {
@@ -22,9 +22,9 @@ export default function useDetectOs() {
     } catch (error) {
       setError(error as Error);
     } finally {
-      setLoading(false);
+      setIsPending(false);
     }
   }, []);
 
-  return { loading, error, data, detectOs };
+  return { isPending, error, data, detectOs };
 }

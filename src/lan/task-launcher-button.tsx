@@ -7,7 +7,7 @@ type TaskLauncherButtonProps = {
   title: string;
   onLaunch: (rows: string[]) => void;
   targetIps: string[];
-  loading: boolean;
+  pending: boolean;
   loadingText: string;
 };
 
@@ -15,7 +15,7 @@ export default function TaskLauncherButton({
   title,
   onLaunch,
   targetIps,
-  loading,
+  pending,
   loadingText,
 }: TaskLauncherButtonProps) {
   const handleClick = () => {
@@ -27,10 +27,10 @@ export default function TaskLauncherButton({
       variant="outline"
       size="sm"
       className="h-8"
-      disabled={targetIps.length === 0 || loading}
+      disabled={targetIps.length === 0 || pending}
       onClick={handleClick}
     >
-      {loading ? (
+      {pending ? (
         <>
           {loadingText}
           <LoaderCircle className="ml-1 h-4 w-4 animate-spin" />
