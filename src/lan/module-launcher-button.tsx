@@ -6,7 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { LoaderCircle, Play, Square, TriangleAlert } from "lucide-react";
+import { LoaderCircle, Play, Square } from "lucide-react";
 import { Module } from "./module-launcher-toolbar";
 
 type ModuleLauncherButtonProps = {
@@ -67,13 +67,12 @@ export default function ModuleLauncherButton({
               <p>Actively probes the network by periodically</p>
               <p>sending ARP requests to the entire subnet.</p>
               {module.isRunning && !monitorIsRunning ? (
-                <div className="mt-1 flex items-center text-warning">
-                  <TriangleAlert className="mr-1 h-4 w-4" />
-                  <p>Start the Monitor module to begin discovering hosts.</p>
-                </div>
+                <p className="mt-1 text-destructive">
+                  Start the Monitor module to begin discovering hosts.
+                </p>
               ) : (
                 <p className="mt-1 text-muted-foreground">
-                  Best used in combination with the Monitor module.
+                  Monitor mode must be running to sniff hosts.
                 </p>
               )}
             </>
