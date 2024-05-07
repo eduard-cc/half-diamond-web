@@ -1,15 +1,14 @@
 import { useState, useCallback } from "react";
 import { PortScanType } from "./types";
+import { toast } from "sonner";
 
 export default function useScanPorts() {
   const [data, setData] = useState<Record<string, string> | null>(null);
   const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
 
   const scanPorts = useCallback(
     async (targetIps: string[], scanType: PortScanType) => {
       setIsPending(true);
-      setError(null);
       try {
         const response = await fetch(
           `http://localhost:8000/ports?scan_type=${scanType}`,
@@ -22,11 +21,9 @@ export default function useScanPorts() {
           },
         );
         const openPorts = await response.json();
-        console.log(openPorts);
         setData(openPorts);
       } catch (error) {
-        console.error(error);
-        setError(error as Error);
+        toast.error("Something went wrong while scanning ports.");
       } finally {
         setIsPending(false);
       }
@@ -34,5 +31,5 @@ export default function useScanPorts() {
     [],
   );
 
-  return { isPending, error, data, scanPorts };
+  return { isPending, data, scanPorts };
 }

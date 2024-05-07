@@ -8,12 +8,8 @@ export default function TaskLauncherToolbar({
 }: {
   targetIps: string[];
 }) {
-  const { isPending: osIsPending, error: osError, detectOs } = useDetectOs();
-  const {
-    isPending: portsIsPending,
-    error: portsError,
-    scanPorts,
-  } = useScanPorts();
+  const { isPending: osIsPending, detectOs } = useDetectOs();
+  const { isPending: portsIsPending, scanPorts } = useScanPorts();
 
   return (
     <div className="flex gap-2">
