@@ -48,10 +48,6 @@ export const columns: ColumnDef<Host>[] = [
       );
     },
     cell: ({ row }) => {
-      if (row.original.status !== "Online") {
-        return null;
-      }
-
       return (
         <Checkbox
           checked={row.getIsSelected()}
@@ -152,12 +148,10 @@ export const columns: ColumnDef<Host>[] = [
         );
       } else {
         return openPorts.map((port) => (
-          <TooltipProvider>
+          <TooltipProvider key={port.port}>
             <Tooltip>
               <TooltipTrigger>
-                <Badge key={port.port} className="mr-1">
-                  {port.port}
-                </Badge>
+                <Badge className="mr-1">{port.port}</Badge>
               </TooltipTrigger>
               <TooltipContent>
                 <div className="grid">
