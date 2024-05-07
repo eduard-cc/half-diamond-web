@@ -12,26 +12,23 @@ export default function useFetchHosts() {
 
   useEffect(() => {
     const fetchHosts = async () => {
-      const monitorResponse = await fetch(
-        "http://localhost:8000/monitor/status",
-      );
-      const probeResponse = await fetch("http://localhost:8000/probe/status");
-      const monitorStatus = await monitorResponse.json();
-      const probeStatus = await probeResponse.json();
+      try {
+        const monitorResponse = await fetch(
+          "http://localhost:8000/monitor/status",
+        );
+        const probeResponse = await fetch("http://localhost:8000/probe/status");
+        const monitorStatus = await monitorResponse.json();
+        const probeStatus = await probeResponse.json();
 
-      monitor.setRunning(monitorStatus.running);
-      probe.setRunning(probeStatus.running);
+        monitor.setRunning(monitorStatus.running);
+        probe.setRunning(probeStatus.running);
 
-      const response = await fetch("http://localhost:8000/monitor/hosts");
-      let hosts: Host[] = await response.json();
-
-      if (!monitorStatus.running) {
-        hosts = hosts.map((host) => {
-          host.status = "Offline";
-          return host;
-        });
+        const response = await fetch("http://localhost:8000/monitor/hosts");
+        const hosts = await response.json();
+        setData(hosts);
+      } catch (error) {
+        setError(new Error());
       }
-      setData(hosts);
     };
 
     fetchHosts();
@@ -81,8 +78,8 @@ export default function useFetchHosts() {
       }
     };
 
-    socket.onerror = (event) => {
-      setError(new Error("WebSocket error: " + event));
+    socket.onerror = () => {
+      setError(new Error());
       socket = null;
     };
 
@@ -108,17 +105,6 @@ export default function useFetchHosts() {
       ...updatedProperties,
     };
   };
-
-  // Set all hosts to offline when monitor is stopped
-  useEffect(() => {
-    if (!monitor.isRunning) {
-      const offlineHosts = data.map((host) => {
-        host.status = "Offline";
-        return host;
-      });
-      setData(offlineHosts);
-    }
-  }, [monitor.isRunning]);
 
   return {
     data,
