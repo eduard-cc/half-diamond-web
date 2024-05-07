@@ -17,32 +17,20 @@ export default function ModuleLauncherToolbar({
   monitor,
   probe,
 }: ModuleLauncherToolbarProps) {
-  const handleMonitorClick = async () => {
-    if (monitor.isRunning) {
-      await monitor.stop();
-    } else {
-      await monitor.start();
-    }
-  };
-
-  const handleProbeClick = async () => {
-    if (probe.isRunning) {
-      await probe.stop();
-    } else {
-      await probe.start();
-    }
+  const handleModuleClick = async (module: Module) => {
+    module.isRunning ? await module.stop() : await module.start();
   };
 
   return (
     <>
       <ModuleLauncherButton
         module={monitor}
-        onClick={handleMonitorClick}
+        onClick={() => handleModuleClick(monitor)}
         moduleName="Monitor"
       />
       <ModuleLauncherButton
         module={probe}
-        onClick={handleProbeClick}
+        onClick={() => handleModuleClick(probe)}
         moduleName="Probe"
         monitorIsRunning={monitor.isRunning}
       />
