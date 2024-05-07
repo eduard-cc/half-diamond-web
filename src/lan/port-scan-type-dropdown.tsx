@@ -18,18 +18,9 @@ type PortScanTypeDropdownProps = {
 };
 
 const scanTypeDetails = {
-  [PortScanType.SYN]: {
-    displayName: "TCP SYN",
-    description: "Half-open scan. Fast and stealthy.",
-  },
-  [PortScanType.TCP]: {
-    displayName: "TCP",
-    description: "Full connect scan. Slower and more detectable.",
-  },
-  [PortScanType.UDP]: {
-    displayName: "UDP",
-    description: "For services that use UDP.",
-  },
+  [PortScanType.SYN]: "TCP SYN",
+  [PortScanType.TCP]: "TCP",
+  [PortScanType.UDP]: "UDP",
 };
 
 export default function PortScanTypeDropdown({
@@ -46,7 +37,7 @@ export default function PortScanTypeDropdown({
           disabled={disabled}
           className="z-10 h-8 rounded-r-none border-r-0"
         >
-          {scanTypeDetails[scanType].displayName}
+          {scanTypeDetails[scanType]}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
@@ -57,16 +48,13 @@ export default function PortScanTypeDropdown({
           value={scanType}
           onValueChange={(value) => setScanType(value as PortScanType)}
         >
-          {Object.entries(scanTypeDetails).map(
-            ([value, { displayName, description }]) => (
-              <DropdownMenuRadioItem key={value} value={value as PortScanType}>
-                <div>
-                  <p>{displayName}</p>
-                  <p className="text-xs text-muted-foreground">{description}</p>
-                </div>
-              </DropdownMenuRadioItem>
-            ),
-          )}
+          {Object.entries(scanTypeDetails).map(([value, displayName]) => (
+            <DropdownMenuRadioItem key={value} value={value as PortScanType}>
+              <div>
+                <p>{displayName}</p>
+              </div>
+            </DropdownMenuRadioItem>
+          ))}
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
