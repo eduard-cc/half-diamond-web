@@ -1,11 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 import { LoaderCircle } from "lucide-react";
 
 type TaskLauncherButtonProps = {
-  title: string;
-  onLaunch: (rows: string[]) => void;
+  title: "Detect OS" | "Scan Ports";
+  onLaunch: (targetIps: string[]) => void;
   targetIps: string[];
   pending: boolean;
   loadingText: string;
@@ -26,9 +27,9 @@ export default function TaskLauncherButton({
     <Button
       variant="outline"
       size="sm"
-      className="h-8"
       disabled={targetIps.length === 0 || pending}
       onClick={handleClick}
+      className={cn("h-8", title === "Scan Ports" && "rounded-l-none")}
     >
       {pending ? (
         <>
