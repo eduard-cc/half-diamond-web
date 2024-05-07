@@ -16,7 +16,7 @@ export default function Navbar() {
           <Network size={20} />
           <p>LAN</p>
           {hostCount > 0 && (
-            <div className="absolute right-1 top-1 rounded-full bg-gray-400 px-[6px] py-[2px] text-xs text-white">
+            <div className="absolute right-[-2px] top-[-2px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-white">
               {hostCount}
             </div>
           )}
