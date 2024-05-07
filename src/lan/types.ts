@@ -27,9 +27,9 @@ export type Event = {
 };
 
 export enum PortScanType {
-  SYN = "SYN",
-  TCP = "TCP",
-  UDP = "UDP",
+  SYN = "-sS",
+  TCP = "-sT",
+  UDP = "-sU",
 }
 
 export enum EventType {
