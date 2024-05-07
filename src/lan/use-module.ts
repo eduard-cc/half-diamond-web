@@ -20,9 +20,7 @@ export default function useModule(name: "monitor" | "probe") {
           toast.success(`${capitalizeModule(name)} module is now running.`);
           resolve();
         } catch (error) {
-          toast.error(`${capitalizeModule(name)} module failed to start.`, {
-            description: "API is not responding.",
-          });
+          toast.error("Failed to establish connection to API.");
           reject(error);
         } finally {
           setIsPending(false);

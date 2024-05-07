@@ -222,8 +222,8 @@ export const columns: ColumnDef<Host>[] = [
                 variant="outline"
                 className={`${
                   row.original.status === "Online"
-                    ? "border-green-600/20 bg-green-50"
-                    : "bg-gray-50"
+                    ? "border-green-600/20 bg-green-50 text-green-900"
+                    : "bg-gray-50 text-gray-700"
                 }`}
               >
                 <div className="flex items-center">
