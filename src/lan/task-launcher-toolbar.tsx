@@ -1,4 +1,5 @@
 import TaskLauncherButton from "./task-launcher-button";
+import { PortScanType } from "./types";
 import useDetectOs from "./use-detect-os";
 import useScanPorts from "./use-scan-ports";
 
@@ -28,7 +29,7 @@ export default function TaskLauncherToolbar({
       <TaskLauncherButton
         title="Scan ports"
         onLaunch={(targetIps) => {
-          scanPorts(targetIps);
+          scanPorts(targetIps, PortScanType.SYN);
         }}
         targetIps={targetIps}
         loading={portsLoading}
