@@ -21,8 +21,10 @@ import { useHostCount } from "./use-host-count";
 import TaskLauncherToolbar from "./task-launcher-toolbar";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
-import { toast } from "sonner";
 import { CircleAlert } from "lucide-react";
+import { toast } from "sonner";
+import { Module } from "./module-launcher-toolbar";
+import { Button } from "@/components/ui/button";
 
 type DataTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -30,6 +32,7 @@ type DataTableProps<TData extends Host, TValue> = {
   isPending: boolean;
   error: Error | null;
   children: React.ReactNode;
+  monitor: Module;
 };
 
 export function DataTable<TData extends Host, TValue>({
@@ -38,6 +41,7 @@ export function DataTable<TData extends Host, TValue>({
   isPending,
   error,
   children,
+  monitor,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const { setHostCount } = useHostCount();
@@ -163,6 +167,16 @@ export function DataTable<TData extends Host, TValue>({
                   className="h-24 text-center"
                 >
                   No hosts found.
+                  {!monitor.isRunning && (
+                    <p>
+                      <Button
+                        variant="link"
+                        onClick={async () => await monitor.start()}
+                      >
+                        Start the Monitor module to begin discovering hosts
+                      </Button>
+                    </p>
+                  )}
                 </TableCell>
               </TableRow>
             )}

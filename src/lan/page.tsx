@@ -13,6 +13,7 @@ export default function Hosts() {
         data={data}
         isPending={isPending}
         error={error}
+        monitor={monitor}
       >
         <ModuleLauncherToolbar monitor={monitor} probe={probe} />
       </DataTable>
