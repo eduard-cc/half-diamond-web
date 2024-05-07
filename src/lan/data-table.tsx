@@ -70,16 +70,6 @@ export function DataTable<TData extends Host, TValue>({
     setHostCount(onlineHostCount);
   }, [data]);
 
-  // Listen when a host disconnects and deselect it
-  useEffect(() => {
-    const rows = table.getSelectedRowModel().rows as Row<Host>[];
-    rows.forEach((row) => {
-      if (row.getIsSelected() && row.original.status !== "Online") {
-        row.toggleSelected(false);
-      }
-    });
-  }, [data]);
-
   const getTargetIps = () => {
     const rows = table.getFilteredSelectedRowModel().rows as Row<Host>[];
     return rows.map((row) => row.original.ip);
