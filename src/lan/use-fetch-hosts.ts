@@ -38,30 +38,41 @@ export default function useFetchHosts() {
   }, []);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8000/monitor/ws");
+    let socket: WebSocket | null = new WebSocket(
+      "ws://localhost:8000/monitor/ws",
+    );
 
     socket.onopen = () => {
       setIsPending(false);
     };
 
     socket.onmessage = (e) => {
-      console.log(e.data);
       const event: Event = JSON.parse(e.data);
-      console.log(event.data);
-      console.log(event.type);
       if (event.type === EventType.HOST_NEW) {
         setData((prevData) => [...prevData, event.data]);
-      } else if (
-        event.type === EventType.HOST_SEEN ||
-        event.type === EventType.HOST_CONNECTED ||
-        event.type === EventType.HOST_DISCONNECTED
-      ) {
+      } else {
         setData((prevData) => {
           return prevData.map((host) => {
-            if (host.mac === event.data.mac) {
-              return event.data;
-            } else {
+            if (host.mac !== event.data.mac) {
               return host;
+            }
+
+            switch (event.type) {
+              case EventType.HOST_SEEN:
+                return updateHost(host, { last_seen: event.data.last_seen });
+              case EventType.HOST_CONNECTED:
+                return updateHost(host, {
+                  status: event.data.status,
+                  last_seen: event.data.last_seen,
+                });
+              case EventType.HOST_DISCONNECTED:
+                return updateHost(host, { status: event.data.status });
+              case EventType.SCAN_SYN:
+              case EventType.SCAN_TCP:
+              case EventType.SCAN_UDP:
+                return updateHost(host, { open_ports: event.data.open_ports });
+              default:
+                return host;
             }
           });
         });
@@ -70,10 +81,31 @@ export default function useFetchHosts() {
 
     socket.onerror = (event) => {
       setError(new Error("WebSocket error: " + event));
+      socket = null;
     };
 
-    return () => socket.close();
+    socket.onclose = () => {
+      if (socket) {
+        // Attempt to reconnect after 5 seconds
+        setTimeout(() => {
+          socket = new WebSocket("ws://localhost:8000/monitor/ws");
+        }, 5000);
+      }
+    };
+
+    return () => {
+      if (socket) {
+        socket.close();
+      }
+    };
   }, []);
+
+  const updateHost = (host: Host, updatedProperties: Partial<Host>) => {
+    return {
+      ...host,
+      ...updatedProperties,
+    };
+  };
 
   // Set all hosts to offline when monitor is stopped
   useEffect(() => {
