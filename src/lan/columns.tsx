@@ -18,7 +18,6 @@ import {
   Package,
   Wrench,
 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 
 export const columns: ColumnDef<Host>[] = [
   {
@@ -188,7 +187,6 @@ export const columns: ColumnDef<Host>[] = [
                     </div>
                   )}
                 </div>
-                <Progress value={Number(port.conf) * 10} />
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
