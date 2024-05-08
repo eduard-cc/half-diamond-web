@@ -1,28 +1,55 @@
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function useModule(name: "monitor" | "probe") {
+export type Module = {
+  isRunning: boolean;
+  isPending: boolean;
+  start: () => Promise<void>;
+  stop: () => Promise<void>;
+};
+
+export default function useModule(module: "monitor" | "probe") {
   const [isRunning, setIsRunning] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/${module}/status`);
+        const status = await response.json();
+        setIsRunning(status.running);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: `Failed to fetch ${capitalizeModule(module)} module status.`,
+        });
+      }
+    };
+
+    fetchStatus();
+  }, []);
 
   const start = (): Promise<void> => {
     setIsPending(true);
     return new Promise<void>((resolve, reject) => {
       setTimeout(async () => {
         try {
-          const response = await fetch(`http://localhost:8000/${name}/start`, {
-            method: "POST",
-          });
+          const response = await fetch(
+            `http://localhost:8000/${module}/start`,
+            {
+              method: "POST",
+            },
+          );
           if (!response.ok) {
             toast({
               variant: "destructive",
-              title: `${capitalizeModule(name)} module failed to start.`,
+              title: `${capitalizeModule(module)} module failed to start.`,
             });
           }
           setIsRunning(true);
           toast({
-            title: `${capitalizeModule(name)} module is now running.`,
+            title: `${capitalizeModule(module)} module is now running.`,
           });
           resolve();
         } catch (error) {
@@ -41,18 +68,18 @@ export default function useModule(name: "monitor" | "probe") {
   const stop = async () => {
     setIsPending(true);
     try {
-      const response = await fetch(`http://localhost:8000/${name}/stop`, {
+      const response = await fetch(`http://localhost:8000/${module}/stop`, {
         method: "POST",
       });
       if (!response.ok) {
         toast({
           variant: "destructive",
-          title: `${capitalizeModule(name)} module failed to stop.`,
+          title: `${capitalizeModule(module)} module failed to stop.`,
         });
       }
       setIsRunning(false);
       toast({
-        title: `${capitalizeModule(name)} module has been stopped.`,
+        title: `${capitalizeModule(module)} module has been stopped.`,
       });
     } catch (error) {
       toast({
@@ -64,10 +91,6 @@ export default function useModule(name: "monitor" | "probe") {
     }
   };
 
-  const setRunning = (running: boolean) => {
-    setIsRunning(running);
-  };
-
   const capitalizeModule = (module: string) => {
     return module.charAt(0).toUpperCase() + module.slice(1);
   };
@@ -77,6 +100,5 @@ export default function useModule(name: "monitor" | "probe") {
     isPending,
     start,
     stop,
-    setRunning,
   };
 }
