@@ -10,14 +10,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
-import {
-  Circle,
-  CircleDashed,
-  Info,
-  Lightbulb,
-  Package,
-  Wrench,
-} from "lucide-react";
+import CopyToClipboardButton from "./copy-to-clipboard-button";
 
 export const columns: ColumnDef<Host>[] = [
   {
@@ -61,11 +54,11 @@ export const columns: ColumnDef<Host>[] = [
     header: "IP",
     cell: ({ row }) => {
       if (row.original.name === "None") {
-        return row.original.ip;
+        return <CopyToClipboardButton text={row.original.ip} />;
       }
       return (
         <>
-          {row.original.ip}
+          <CopyToClipboardButton text={row.original.ip} />
           <Badge
             variant={row.original.name === "Gateway" ? "secondary" : "outline"}
             className="ml-2"
@@ -79,6 +72,9 @@ export const columns: ColumnDef<Host>[] = [
   {
     accessorKey: "mac",
     header: "MAC",
+    cell: ({ row }) => {
+      return <CopyToClipboardButton text={row.getValue("mac")} />;
+    },
   },
   {
     accessorKey: "vendor",
@@ -89,7 +85,20 @@ export const columns: ColumnDef<Host>[] = [
           <p className="text-muted-foreground">{row.getValue("vendor")}</p>
         );
       } else {
-        return <div>{row.getValue("vendor")}</div>;
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="line-clamp-1 w-fit">
+                  {row.getValue("vendor")}
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{row.getValue("vendor")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
       }
     },
   },
@@ -99,7 +108,7 @@ export const columns: ColumnDef<Host>[] = [
     cell: ({ row }) => {
       if (row.getValue("os") === null || row.getValue("os") === "Unknown") {
         return (
-          <TooltipProvider>
+          <TooltipProvider delayDuration={0}>
             <Tooltip>
               <TooltipTrigger>
                 <Button
@@ -117,7 +126,18 @@ export const columns: ColumnDef<Host>[] = [
           </TooltipProvider>
         );
       } else {
-        return <div>{row.getValue("os")}</div>;
+        return (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="line-clamp-1 w-fit">{row.getValue("os")}</div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{row.getValue("os")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        );
       }
     },
   },
@@ -128,7 +148,7 @@ export const columns: ColumnDef<Host>[] = [
       const openPorts = row.getValue("open_ports") as Port[];
       if (!openPorts || openPorts.length === 0) {
         return (
-          <TooltipProvider>
+          <TooltipProvider delayDuration={0}>
             <Tooltip>
               <TooltipTrigger>
                 <Button
@@ -146,51 +166,52 @@ export const columns: ColumnDef<Host>[] = [
           </TooltipProvider>
         );
       } else {
-        return openPorts.map((port) => (
-          <TooltipProvider key={port.port}>
-            <Tooltip>
-              <TooltipTrigger>
-                <Badge className="mr-1">{port.port}</Badge>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="grid">
-                  <div className="inline">
-                    {port.state === "open" ? (
-                      <Circle className="mr-1 inline h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <CircleDashed className="mr-1 h-4 w-4 text-muted-foreground" />
-                    )}
-                    {port.port}/{port.protocol}
-                  </div>
-                  {port.name && (
-                    <div className="inline">
-                      <Wrench className="mr-1 inline h-4 w-4 text-muted-foreground" />
-                      {port.name}
+        return (
+          <div className="flex flex-wrap gap-1">
+            {openPorts.map((port) => (
+              <TooltipProvider key={port.port}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge variant="secondary">{port.port}</Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="grid">
+                      <div className="inline">
+                        {port.port}/{port.protocol}
+                      </div>
+                      {port.name && (
+                        <div className="inline text-muted-foreground">
+                          {port.name}
+                        </div>
+                      )}
+                      {port.product && (
+                        <div className="inline text-muted-foreground">
+                          {port.product}{" "}
+                          {port.version ? `(${port.version})` : ""}
+                        </div>
+                      )}
+                      {port.extrainfo && (
+                        <div className="inline text-muted-foreground">
+                          {port.extrainfo}
+                        </div>
+                      )}
+                      {port.reason && (
+                        <div className="inline uppercase text-muted-foreground">
+                          {port.reason}
+                        </div>
+                      )}
+                      {port.conf && (
+                        <div className="inline text-muted-foreground">
+                          {port.conf}/10 conf
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {port.product && (
-                    <div className="inline">
-                      <Package className="mr-1 inline h-4 w-4 text-muted-foreground" />
-                      {port.product} {port.version ? `(${port.version})` : ""}
-                    </div>
-                  )}
-                  {port.extrainfo && (
-                    <div className="inline">
-                      <Info className="mr-1 inline h-4 w-4 text-muted-foreground" />
-                      {port.extrainfo}
-                    </div>
-                  )}
-                  {port.reason && (
-                    <div className="inline uppercase">
-                      <Lightbulb className="mr-1 inline h-4 w-4 text-muted-foreground" />
-                      {port.reason}
-                    </div>
-                  )}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        ));
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ))}
+          </div>
+        );
       }
     },
   },
@@ -213,7 +234,7 @@ export const columns: ColumnDef<Host>[] = [
         }
       }
       return (
-        <TooltipProvider>
+        <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger>
               <Badge
