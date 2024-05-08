@@ -11,20 +11,17 @@ export default function Navbar() {
       <div className="flex gap-4">
         <Button
           variant="outline"
-          className="relative flex h-12 w-12 flex-col p-0 text-muted-foreground"
+          className="relative flex h-12 w-12 flex-col p-0"
         >
           <Network size={20} />
           <p>LAN</p>
           {hostCount > 0 && (
-            <div className="absolute right-[-2px] top-[-2px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-primary-foreground">
+            <div className="absolute right-[-3px] top-[-3px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-primary-foreground">
               {hostCount}
             </div>
           )}
         </Button>
-        <Button
-          variant="outline"
-          className="flex h-12 w-12 flex-col p-0 text-muted-foreground"
-        >
+        <Button variant="outline" className="flex h-12 w-12 flex-col p-0">
           <Terminal size={20} />
           <p>Logs</p>
         </Button>
