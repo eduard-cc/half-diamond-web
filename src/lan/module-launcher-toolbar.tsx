@@ -1,12 +1,5 @@
 import ModuleLauncherButton from "./module-launcher-button";
-
-export type Module = {
-  isRunning: boolean;
-  isPending: boolean;
-  start: () => Promise<void>;
-  stop: () => Promise<void>;
-  setRunning: (running: boolean) => void;
-};
+import type { Module } from "./use-module";
 
 type ModuleLauncherToolbarProps = {
   monitor: Module;
