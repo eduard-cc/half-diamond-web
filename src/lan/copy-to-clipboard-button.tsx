@@ -8,13 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
 
-interface CopyToClipboardButtonProps {
-  text: string;
-}
-
-const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
-  text,
-}) => {
+export default function CopyToClipboardButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
   const triggerRef = useRef(null);
 
@@ -23,7 +17,7 @@ const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
     event.stopPropagation();
     await navigator.clipboard.writeText(text);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -60,6 +54,4 @@ const CopyToClipboardButton: React.FC<CopyToClipboardButtonProps> = ({
       </Tooltip>
     </TooltipProvider>
   );
-};
-
-export default CopyToClipboardButton;
+}
