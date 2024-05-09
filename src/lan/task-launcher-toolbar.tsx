@@ -1,19 +1,26 @@
 import TaskLauncherButton from "./task-launcher-button";
-import useDetectOs from "./use-detect-os";
-import useScanPorts from "./use-scan-ports";
 import PortScanTypeDropdown from "./port-scan-type-dropdown";
-import { useState } from "react";
 import { PortScanType } from "./types";
+
+type TaskLauncherToolbarProps = {
+  targetIps: string[];
+  detectOs: (targetIps: string[]) => void;
+  scanPorts: (targetIps: string[], scanType: PortScanType) => void;
+  osIsPending: boolean;
+  portsIsPending: boolean;
+  scanType: PortScanType;
+  setScanType: React.Dispatch<React.SetStateAction<PortScanType>>;
+};
 
 export default function TaskLauncherToolbar({
   targetIps,
-}: {
-  targetIps: string[];
-}) {
-  const { isPending: osIsPending, detectOs } = useDetectOs();
-  const { isPending: portsIsPending, scanPorts } = useScanPorts();
-  const [scanType, setScanType] = useState<PortScanType>(PortScanType.SYN);
-
+  detectOs,
+  scanPorts,
+  osIsPending,
+  portsIsPending,
+  scanType,
+  setScanType,
+}: TaskLauncherToolbarProps) {
   return (
     <div className="flex gap-2">
       <TaskLauncherButton

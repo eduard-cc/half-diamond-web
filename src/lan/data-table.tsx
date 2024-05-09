@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Host } from "./types";
+import { Host, PortScanType } from "./types";
 import { useHostCount } from "./use-host-count";
 import TaskLauncherToolbar from "./task-launcher-toolbar";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
@@ -28,19 +28,31 @@ import type { Module } from "./use-module";
 type DataTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  isPending: boolean;
+  fetchIsPending: boolean;
   error: Error | null;
   children: React.ReactNode;
   monitor: Module;
+  detectOs: (targetIps: string[]) => void;
+  scanPorts: (targetIps: string[], scanType: PortScanType) => void;
+  osIsPending: boolean;
+  portsIsPending: boolean;
+  scanType: PortScanType;
+  setScanType: React.Dispatch<React.SetStateAction<PortScanType>>;
 };
 
 export function DataTable<TData extends Host, TValue>({
   columns,
   data,
-  isPending,
+  fetchIsPending,
   error,
   children,
   monitor,
+  detectOs,
+  scanPorts,
+  osIsPending,
+  portsIsPending,
+  scanType,
+  setScanType,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const { setHostCount } = useHostCount();
@@ -91,7 +103,15 @@ export function DataTable<TData extends Host, TValue>({
       <div className="mb-2 flex justify-between">
         <div className="flex gap-2">
           {children}
-          <TaskLauncherToolbar targetIps={getTargetIps()} />
+          <TaskLauncherToolbar
+            targetIps={getTargetIps()}
+            detectOs={detectOs}
+            scanPorts={scanPorts}
+            osIsPending={osIsPending}
+            portsIsPending={portsIsPending}
+            scanType={scanType}
+            setScanType={setScanType}
+          />
         </div>
         <DataTableColumnToggle table={table} />
       </div>
@@ -130,7 +150,7 @@ export function DataTable<TData extends Host, TValue>({
                   </div>
                 </TableCell>
               </TableRow>
-            ) : isPending ? (
+            ) : fetchIsPending ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
