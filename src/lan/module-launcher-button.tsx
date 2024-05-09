@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { LoaderCircle, Play, Square } from "lucide-react";
-import { Module } from "./module-launcher-toolbar";
+import { Module } from "./use-module";
 
 type ModuleLauncherButtonProps = {
   module: Module;
