@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Host, Port } from "./types";
+import { Host, Port, PortScanType } from "./types";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -12,33 +12,25 @@ import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import CopyToClipboardButton from "./copy-to-clipboard-button";
 
-export const columns: ColumnDef<Host>[] = [
+export const columns = (
+  detectOs: (targetIps: string[]) => void,
+  scanPorts: (targetIps: string[], scanType: PortScanType) => void,
+  osIsPending: boolean,
+  portsIsPending: boolean,
+  scanType: PortScanType,
+): ColumnDef<Host>[] => [
   {
     id: "select",
-    header: ({ table }) => {
-      const onlineRows = table
-        .getRowModel()
-        .rows.filter((row) => row.original.status === "Online");
-      const isAllOnlineRowsSelected = onlineRows.every((row) =>
-        row.getIsSelected(),
-      );
-      const isSomeOnlineRowsSelected = onlineRows.some((row) =>
-        row.getIsSelected(),
-      );
-
-      return (
-        <Checkbox
-          checked={
-            isAllOnlineRowsSelected ||
-            (isSomeOnlineRowsSelected && "indeterminate")
-          }
-          onCheckedChange={(value: boolean) => {
-            onlineRows.forEach((row) => row.toggleSelected(value));
-          }}
-          aria-label="Select all"
-        />
-      );
-    },
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
     cell: ({ row }) => {
       return (
         <Checkbox
@@ -115,12 +107,14 @@ export const columns: ColumnDef<Host>[] = [
                   variant="link"
                   size="sm"
                   className="p-0 text-sm text-muted-foreground"
+                  onClick={() => detectOs([row.original.ip])}
+                  disabled={osIsPending}
                 >
                   Unknown
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Detect OS</p>
+                {osIsPending ? "Detecting OS..." : "Detect OS"}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -155,12 +149,14 @@ export const columns: ColumnDef<Host>[] = [
                   variant="link"
                   size="sm"
                   className="p-0 text-sm text-muted-foreground"
+                  onClick={() => scanPorts([row.original.ip], scanType)}
+                  disabled={portsIsPending}
                 >
                   {!openPorts ? "Unknown" : "None"}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {!openPorts ? "Scan ports" : "Scan ports again"}
+                {portsIsPending ? "Scanning ports..." : "Scan ports"}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
