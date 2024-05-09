@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import { LoaderCircle, Play, Square } from "lucide-react";
 import { Module } from "./use-module";
+import { cn } from "@/lib/utils";
 
 type ModuleLauncherButtonProps = {
   module: Module;
@@ -36,13 +37,22 @@ export default function ModuleLauncherButton({
             {module.isPending ? (
               <>
                 <LoaderCircle className="h-4 w-4 animate-spin" />
-                <Separator orientation="vertical" className="mx-2 h-4" />
+                <Separator
+                  orientation="vertical"
+                  className={cn(
+                    "mx-2 h-4",
+                    module.isRunning && "dark:bg-foreground",
+                  )}
+                />
                 {module.isRunning ? <p>Stopping...</p> : <p>Starting...</p>}
               </>
             ) : module.isRunning ? (
               <>
                 <Square className="h-4 w-4" />
-                <Separator orientation="vertical" className="mx-2 h-4" />
+                <Separator
+                  orientation="vertical"
+                  className="mx-2 h-4 dark:bg-foreground"
+                />
                 <p>Stop {moduleName}</p>
               </>
             ) : (
