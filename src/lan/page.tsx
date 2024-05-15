@@ -9,10 +9,13 @@ import useWebSocket from "./hooks/use-web-socket";
 import { toast } from "@/components/ui/use-toast";
 import useDetectOs from "./hooks/use-detect-os";
 import useScanPorts from "./hooks/use-scan-ports";
+import TaskLauncherToolbar from "./task-launcher-toolbar";
+import { useHostCount } from "./hooks/use-host-count";
 
 export default function Hosts() {
   const [hosts, setHosts] = useState<Host[]>([]);
   const [scanType, setScanType] = useState<PortScanType>(PortScanType.SYN);
+  const [selectedIps, setSelectedIps] = useState<string[]>([]);
 
   const monitor = useModule("monitor");
   const probe = useModule("probe");
@@ -22,6 +25,7 @@ export default function Hosts() {
   const { error: webSocketError } = useWebSocket(setHosts);
   const { isPending: osIsPending, detectOs } = useDetectOs();
   const { isPending: portsIsPending, scanPorts } = useScanPorts();
+  const { setHostCount } = useHostCount();
 
   const toastShown = useRef(false);
   const column = columns(
@@ -32,6 +36,16 @@ export default function Hosts() {
     scanType,
   );
 
+  // Update online host count context when status changes
+  useEffect(() => {
+    const onlineHostCount = hosts.filter(
+      (host) => host.status === "Online",
+    ).length;
+
+    setHostCount(onlineHostCount);
+  }, [hosts]);
+
+  // Show error toast only once
   useEffect(() => {
     if ((fetchError || webSocketError) && !toastShown.current) {
       toast({
@@ -47,17 +61,21 @@ export default function Hosts() {
       <HostsTable
         columns={column}
         data={hosts}
-        fetchIsPending={fetchIsPending}
+        isPending={fetchIsPending}
         error={fetchError || webSocketError}
         monitor={monitor}
-        detectOs={detectOs}
-        scanPorts={scanPorts}
-        osIsPending={osIsPending}
-        portsIsPending={portsIsPending}
-        scanType={scanType}
-        setScanType={setScanType}
+        setSelectedIps={setSelectedIps}
       >
         <ModuleLauncherToolbar monitor={monitor} probe={probe} />
+        <TaskLauncherToolbar
+          targetIps={selectedIps}
+          detectOs={detectOs}
+          scanPorts={scanPorts}
+          osIsPending={osIsPending}
+          portsIsPending={portsIsPending}
+          scanType={scanType}
+          setScanType={setScanType}
+        />
       </HostsTable>
     </div>
   );

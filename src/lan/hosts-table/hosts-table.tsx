@@ -16,46 +16,33 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Host, PortScanType } from "../types";
-import { useHostCount } from "../hooks/use-host-count";
-import TaskLauncherToolbar from "../task-launcher-toolbar";
+import { Host } from "@/lan/types";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
 import { CircleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Module } from "../hooks/use-module";
+import type { Module } from "@/lan/hooks/use-module";
 
 type HostsTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  fetchIsPending: boolean;
+  isPending: boolean;
   error: Error | null;
   children: React.ReactNode;
   monitor: Module;
-  detectOs: (targetIps: string[]) => void;
-  scanPorts: (targetIps: string[], scanType: PortScanType) => void;
-  osIsPending: boolean;
-  portsIsPending: boolean;
-  scanType: PortScanType;
-  setScanType: React.Dispatch<React.SetStateAction<PortScanType>>;
+  setSelectedIps: (ips: string[]) => void;
 };
 
 export function HostsTable<TData extends Host, TValue>({
   columns,
   data,
-  fetchIsPending,
+  isPending,
   error,
   children,
   monitor,
-  detectOs,
-  scanPorts,
-  osIsPending,
-  portsIsPending,
-  scanType,
-  setScanType,
+  setSelectedIps,
 }: HostsTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
-  const { setHostCount } = useHostCount();
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     () => {
       const savedVisibility = window.sessionStorage.getItem("columnVisibility");
@@ -76,19 +63,12 @@ export function HostsTable<TData extends Host, TValue>({
     },
   });
 
-  // Update online host count context when status changes
+  // Update selected IPs when row selection changes
   useEffect(() => {
-    const rows = table.getFilteredRowModel().rows as Row<Host>[];
-    const onlineHostCount = rows.filter(
-      (row) => row.original.status === "Online",
-    ).length;
-    setHostCount(onlineHostCount);
-  }, [data]);
-
-  const getTargetIps = () => {
     const rows = table.getFilteredSelectedRowModel().rows as Row<Host>[];
-    return rows.map((row) => row.original.ip);
-  };
+    const ips = rows.map((row) => row.original.ip);
+    setSelectedIps(ips);
+  }, [rowSelection]);
 
   // Save the user's column visibility preferences in session storage
   useEffect(() => {
@@ -101,18 +81,7 @@ export function HostsTable<TData extends Host, TValue>({
   return (
     <>
       <div className="mb-2 flex justify-between">
-        <div className="flex gap-2">
-          {children}
-          <TaskLauncherToolbar
-            targetIps={getTargetIps()}
-            detectOs={detectOs}
-            scanPorts={scanPorts}
-            osIsPending={osIsPending}
-            portsIsPending={portsIsPending}
-            scanType={scanType}
-            setScanType={setScanType}
-          />
-        </div>
+        <div className="flex gap-2">{children}</div>
         <DataTableColumnToggle table={table} />
       </div>
       <div className="rounded-md border">
@@ -150,7 +119,7 @@ export function HostsTable<TData extends Host, TValue>({
                   </div>
                 </TableCell>
               </TableRow>
-            ) : fetchIsPending ? (
+            ) : isPending ? (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
