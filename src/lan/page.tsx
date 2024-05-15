@@ -1,19 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { columns } from "./hosts-table/columns";
 import { HostsTable } from "./hosts-table/hosts-table";
 import ModuleLauncherToolbar from "./module-launcher-toolbar";
 import useFetchHosts from "./hooks/use-fetch-hosts";
 import useModule from "./hooks/use-module";
 import { Host, PortScanType } from "./types";
-import useWebSocket from "./hooks/use-websocket";
-import { toast } from "@/components/ui/use-toast";
 import useDetectOs from "./hooks/use-detect-os";
 import useScanPorts from "./hooks/use-scan-ports";
 import TaskLauncherToolbar from "./task-launcher-toolbar";
 import { useHostCount } from "./hooks/use-host-count";
 
-export default function Hosts() {
-  const [hosts, setHosts] = useState<Host[]>([]);
+type HostsPageProps = {
+  hosts: Host[];
+  setHosts: React.Dispatch<React.SetStateAction<Host[]>>;
+};
+
+export default function HostsPage({ hosts, setHosts }: HostsPageProps) {
   const [scanType, setScanType] = useState<PortScanType>(PortScanType.SYN);
   const [selectedIps, setSelectedIps] = useState<string[]>([]);
 
@@ -22,12 +25,10 @@ export default function Hosts() {
 
   const { isPending: fetchIsPending, error: fetchError } =
     useFetchHosts(setHosts);
-  const { error: webSocketError } = useWebSocket(setHosts);
   const { isPending: osIsPending, detectOs } = useDetectOs();
   const { isPending: portsIsPending, scanPorts } = useScanPorts();
   const { setHostCount } = useHostCount();
 
-  const toastShown = useRef(false);
   const hostsColumns = columns(
     detectOs,
     scanPorts,
@@ -45,24 +46,13 @@ export default function Hosts() {
     setHostCount(onlineHostCount);
   }, [hosts]);
 
-  // Show error toast only once
-  useEffect(() => {
-    if ((fetchError || webSocketError) && !toastShown.current) {
-      toast({
-        variant: "destructive",
-        title: "Failed to establish connection to API.",
-      });
-      toastShown.current = true;
-    }
-  }, [fetchError, webSocketError]);
-
   return (
     <div className="container mx-auto py-2">
       <HostsTable
         columns={hostsColumns}
         data={hosts}
         isPending={fetchIsPending}
-        error={fetchError || webSocketError}
+        error={fetchError}
         monitor={monitor}
         setSelectedIps={setSelectedIps}
       >

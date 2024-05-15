@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { EventType, Event, Host } from "@/lan/types";
+import { toast } from "@/components/ui/use-toast";
 
 export default function useWebSocket(
   updateHosts: (updateFn: (prevData: Host[]) => Host[]) => void,
+  updateEvents: (updateFn: (prevData: Event[]) => Event[]) => void,
 ) {
-  const [error, setError] = useState<Error | null>(null);
-
   const mergeProps = (host: Host, updatedProperties: Partial<Host>) => {
     return {
       ...host,
@@ -18,6 +18,8 @@ export default function useWebSocket(
 
     socket.onmessage = (e) => {
       const event: Event = JSON.parse(e.data);
+      updateEvents((prevEvents) => [...prevEvents, event]);
+
       if (event.type === EventType.HOST_NEW) {
         updateHosts((prevData) => [...prevData, event.data]);
       } else {
@@ -56,7 +58,10 @@ export default function useWebSocket(
     };
 
     socket.onerror = () => {
-      setError(new Error());
+      toast({
+        variant: "destructive",
+        title: "Failed to establish connection to API.",
+      });
     };
 
     return () => {
@@ -65,6 +70,4 @@ export default function useWebSocket(
       }
     };
   }, []);
-
-  return { error };
 }
