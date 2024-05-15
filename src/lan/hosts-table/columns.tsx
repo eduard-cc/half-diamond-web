@@ -216,19 +216,10 @@ export const columns = (
     header: "Status",
     cell: ({ row }) => {
       const date = new Date(row.original.last_seen);
-      let formattedDate = "Invalid date";
-
-      if (date.getTime() <= Date.now()) {
-        const differenceInSeconds = (Date.now() - date.getTime()) / 1000;
-        if (row.original.status === "Online" && differenceInSeconds <= 30) {
-          formattedDate = "now";
-        } else {
-          formattedDate = formatDistanceToNow(date, {
-            addSuffix: true,
-            includeSeconds: true,
-          });
-        }
-      }
+      const formattedDate = formatDistanceToNow(date, {
+        addSuffix: true,
+        includeSeconds: true,
+      });
       return (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
