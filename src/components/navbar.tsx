@@ -1,11 +1,11 @@
 import { Button } from "./ui/button";
 import { Network, Terminal } from "lucide-react";
-import { useHostCount } from "@/lan/hooks/use-host-count";
 import ThemeToggle from "./theme-toggle";
 import { Link } from "react-router-dom";
+import { useHosts } from "@/providers/hosts-provider";
 
 export default function Navbar() {
-  const { hostCount } = useHostCount();
+  const { onlineHostsCount } = useHosts();
 
   return (
     <nav className="container mx-auto mb-2 flex justify-between pt-5">
@@ -18,9 +18,9 @@ export default function Navbar() {
           <Link to="/">
             <Network size={20} />
             <p>LAN</p>
-            {hostCount > 0 && (
+            {onlineHostsCount > 0 && (
               <div className="absolute right-[-3px] top-[-3px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-primary-foreground">
-                {hostCount}
+                {onlineHostsCount}
               </div>
             )}
           </Link>

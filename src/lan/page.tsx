@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { columns } from "./hosts-table/columns";
 import { HostsTable } from "./hosts-table/hosts-table";
 import ModuleLauncherToolbar from "./module-launcher-toolbar";
@@ -9,7 +9,6 @@ import { Host, PortScanType } from "./types";
 import useDetectOs from "./hooks/use-detect-os";
 import useScanPorts from "./hooks/use-scan-ports";
 import TaskLauncherToolbar from "./task-launcher-toolbar";
-import { useHostCount } from "./hooks/use-host-count";
 
 type HostsPageProps = {
   hosts: Host[];
@@ -27,7 +26,6 @@ export default function HostsPage({ hosts, setHosts }: HostsPageProps) {
     useFetchHosts(setHosts);
   const { isPending: osIsPending, detectOs } = useDetectOs();
   const { isPending: portsIsPending, scanPorts } = useScanPorts();
-  const { setHostCount } = useHostCount();
 
   const hostsColumns = columns(
     detectOs,
@@ -36,15 +34,6 @@ export default function HostsPage({ hosts, setHosts }: HostsPageProps) {
     portsIsPending,
     scanType,
   );
-
-  // Update online host count context when status changes
-  useEffect(() => {
-    const onlineHostCount = hosts.filter(
-      (host) => host.status === "Online",
-    ).length;
-
-    setHostCount(onlineHostCount);
-  }, [hosts]);
 
   return (
     <div className="container mx-auto py-2">
