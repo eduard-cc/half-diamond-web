@@ -1,5 +1,5 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Event } from "@/lan/types";
+import { Event, EventType } from "@/lan/types";
 import {
   Tooltip,
   TooltipContent,
@@ -10,6 +10,19 @@ import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+export const eventTypeStyle = {
+  [EventType.HOST_SEEN]: "bg-blue-500 text-white",
+  [EventType.HOST_CONNECTED]: "bg-green-500 text-white",
+  [EventType.HOST_DISCONNECTED]:
+    "bg-gray-50 text-gray-700 dark:border-gray-200/20 dark:bg-gray-600/50 dark:text-foreground",
+  [EventType.HOST_NEW]: "bg-yellow-500 text-white",
+  [EventType.SCAN_TCP]: "bg-purple-500 text-white",
+  [EventType.SCAN_SYN]: "bg-red-500 text-white",
+  [EventType.SCAN_UDP]: "bg-orange-500 text-white",
+  [EventType.OS_DETECTED]: "bg-teal-500 text-white",
+  default: "bg-gray-500 text-white",
+};
 
 export const columns: ColumnDef<Event>[] = [
   {
@@ -63,24 +76,8 @@ export const columns: ColumnDef<Event>[] = [
       return filterValue.includes(rowValue);
     },
     cell: ({ row }) => {
-      let badgeStyle = "";
-      switch (row.original.type) {
-        case "host.seen":
-          badgeStyle = "bg-blue-500 text-white";
-          break;
-        case "host.connected":
-          badgeStyle = "bg-green-500 text-white";
-          break;
-        case "host.disconnected":
-          badgeStyle =
-            "bg-gray-50 text-gray-700 dark:border-gray-200/20 dark:bg-gray-600/50 dark:text-foreground";
-          break;
-        case "host.new":
-          badgeStyle = "bg-yellow-500 text-white";
-          break;
-        default:
-          badgeStyle = "bg-gray-500 text-white";
-      }
+      const badgeStyle =
+        eventTypeStyle[row.original.type] || eventTypeStyle.default;
       return (
         <Badge className={badgeStyle} variant="outline">
           {row.original.type}
