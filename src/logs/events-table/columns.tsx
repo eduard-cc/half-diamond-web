@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { Event } from "@/lan/types";
 import {
   Tooltip,
@@ -57,6 +57,10 @@ export const columns: ColumnDef<Event>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    filterFn: (row: Row<Event>, columnId: string, filterValue: any[]) => {
+      const rowValue = row.original[columnId as keyof Event];
+      return filterValue.includes(rowValue);
     },
     cell: ({ row }) => {
       let badgeStyle = "";
