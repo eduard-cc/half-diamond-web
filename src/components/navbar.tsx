@@ -30,9 +30,9 @@ export default function Navbar() {
           className="flex h-12 w-12 flex-col p-0"
           asChild
         >
-          <Link to="/logs">
+          <Link to="/events">
             <Terminal size={20} />
-            <p>Logs</p>
+            <p>Events</p>
           </Link>
         </Button>
       </div>
