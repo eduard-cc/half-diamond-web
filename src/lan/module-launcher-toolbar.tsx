@@ -1,5 +1,5 @@
 import ModuleLauncherButton from "./module-launcher-button";
-import type { Module } from "./use-module";
+import type { Module } from "./hooks/use-module";
 
 type ModuleLauncherToolbarProps = {
   monitor: Module;

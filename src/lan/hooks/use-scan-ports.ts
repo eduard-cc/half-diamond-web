@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { PortScanType } from "./types";
+import { PortScanType } from "../types";
 import { useToast } from "@/components/ui/use-toast";
 
 export default function useScanPorts() {

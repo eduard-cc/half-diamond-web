@@ -1,6 +1,6 @@
 import { Button } from "./ui/button";
 import { Network, Terminal } from "lucide-react";
-import { useHostCount } from "@/lan/use-host-count";
+import { useHostCount } from "@/lan/hooks/use-host-count";
 import ThemeToggle from "./theme-toggle";
 
 export default function Navbar() {

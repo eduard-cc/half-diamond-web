@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
+import { columns } from "./hosts-table/columns";
+import { DataTable } from "./hosts-table/data-table";
 import ModuleLauncherToolbar from "./module-launcher-toolbar";
-import useFetchHosts from "./use-fetch-hosts";
-import useModule from "./use-module";
+import useFetchHosts from "./hooks/use-fetch-hosts";
+import useModule from "./hooks/use-module";
 import { Host, PortScanType } from "./types";
-import useWebSocket from "./use-web-socket";
+import useWebSocket from "./hooks/use-web-socket";
 import { toast } from "@/components/ui/use-toast";
-import useDetectOs from "./use-detect-os";
-import useScanPorts from "./use-scan-ports";
+import useDetectOs from "./hooks/use-detect-os";
+import useScanPorts from "./hooks/use-scan-ports";
 
 export default function Hosts() {
   const [hosts, setHosts] = useState<Host[]>([]);

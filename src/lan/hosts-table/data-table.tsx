@@ -16,14 +16,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Host, PortScanType } from "./types";
-import { useHostCount } from "./use-host-count";
-import TaskLauncherToolbar from "./task-launcher-toolbar";
+import { Host, PortScanType } from "../types";
+import { useHostCount } from "../hooks/use-host-count";
+import TaskLauncherToolbar from "../task-launcher-toolbar";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
 import { CircleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Module } from "./use-module";
+import type { Module } from "../hooks/use-module";
 
 type DataTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
