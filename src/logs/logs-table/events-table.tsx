@@ -5,6 +5,8 @@ import {
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  SortingState,
+  getSortedRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -33,6 +35,7 @@ export function EventsTable<TData extends Event, TValue>({
   isPending,
   error,
 }: EventsTableProps<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
     () => {
@@ -48,7 +51,10 @@ export function EventsTable<TData extends Event, TValue>({
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     state: {
+      sorting,
       rowSelection,
       columnVisibility: columnVisibility,
     },
