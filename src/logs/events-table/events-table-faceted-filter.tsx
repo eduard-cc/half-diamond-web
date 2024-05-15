@@ -1,6 +1,5 @@
-import { Check, CirclePlus } from "lucide-react";
+import { Check, Filter } from "lucide-react";
 import { Column } from "@tanstack/react-table";
-
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,14 +31,13 @@ export function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
-
   const options = Object.values(EventType);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <CirclePlus className="mr-2 h-4 w-4" />
+          <Filter className="mr-2 h-4 w-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
