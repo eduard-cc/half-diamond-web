@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./hosts-table/columns";
-import { DataTable } from "./hosts-table/data-table";
+import { HostsTable } from "./hosts-table/hosts-table";
 import ModuleLauncherToolbar from "./module-launcher-toolbar";
 import useFetchHosts from "./hooks/use-fetch-hosts";
 import useModule from "./hooks/use-module";
@@ -44,7 +44,7 @@ export default function Hosts() {
 
   return (
     <div className="container mx-auto py-2">
-      <DataTable
+      <HostsTable
         columns={column}
         data={hosts}
         fetchIsPending={fetchIsPending}
@@ -58,7 +58,7 @@ export default function Hosts() {
         setScanType={setScanType}
       >
         <ModuleLauncherToolbar monitor={monitor} probe={probe} />
-      </DataTable>
+      </HostsTable>
     </div>
   );
 }

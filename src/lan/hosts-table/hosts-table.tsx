@@ -25,7 +25,7 @@ import { CircleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Module } from "../hooks/use-module";
 
-type DataTableProps<TData extends Host, TValue> = {
+type HostsTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   fetchIsPending: boolean;
@@ -40,7 +40,7 @@ type DataTableProps<TData extends Host, TValue> = {
   setScanType: React.Dispatch<React.SetStateAction<PortScanType>>;
 };
 
-export function DataTable<TData extends Host, TValue>({
+export function HostsTable<TData extends Host, TValue>({
   columns,
   data,
   fetchIsPending,
@@ -53,7 +53,7 @@ export function DataTable<TData extends Host, TValue>({
   portsIsPending,
   scanType,
   setScanType,
-}: DataTableProps<TData, TValue>) {
+}: HostsTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const { setHostCount } = useHostCount();
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
