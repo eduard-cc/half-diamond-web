@@ -21,7 +21,9 @@ export const columns: ColumnDef<Event>[] = [
       return (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
-            <TooltipTrigger>{date.toLocaleString()}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <p className="line-clamp-1 w-fit">{date.toLocaleString()}</p>
+            </TooltipTrigger>
             <TooltipContent>{formattedDate}</TooltipContent>
           </Tooltip>
         </TooltipProvider>

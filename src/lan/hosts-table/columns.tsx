@@ -81,9 +81,7 @@ export const columns = (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="line-clamp-1 w-fit">
-                  {row.getValue("vendor")}
-                </div>
+                <p className="line-clamp-1 w-fit">{row.getValue("vendor")}</p>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{row.getValue("vendor")}</p>
@@ -124,7 +122,7 @@ export const columns = (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="line-clamp-1 w-fit">{row.getValue("os")}</div>
+                <p className="line-clamp-1 w-fit">{row.getValue("os")}</p>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{row.getValue("os")}</p>
