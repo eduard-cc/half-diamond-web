@@ -5,7 +5,7 @@ import ModuleLauncherToolbar from "./module-launcher-toolbar";
 import useFetchHosts from "./hooks/use-fetch-hosts";
 import useModule from "./hooks/use-module";
 import { Host, PortScanType } from "./types";
-import useWebSocket from "./hooks/use-web-socket";
+import useWebSocket from "./hooks/use-websocket";
 import { toast } from "@/components/ui/use-toast";
 import useDetectOs from "./hooks/use-detect-os";
 import useScanPorts from "./hooks/use-scan-ports";
@@ -28,7 +28,7 @@ export default function Hosts() {
   const { setHostCount } = useHostCount();
 
   const toastShown = useRef(false);
-  const column = columns(
+  const hostsColumns = columns(
     detectOs,
     scanPorts,
     osIsPending,
@@ -59,7 +59,7 @@ export default function Hosts() {
   return (
     <div className="container mx-auto py-2">
       <HostsTable
-        columns={column}
+        columns={hostsColumns}
         data={hosts}
         isPending={fetchIsPending}
         error={fetchError || webSocketError}
