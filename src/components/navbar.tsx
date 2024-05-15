@@ -2,6 +2,7 @@ import { Button } from "./ui/button";
 import { Network, Terminal } from "lucide-react";
 import { useHostCount } from "@/lan/hooks/use-host-count";
 import ThemeToggle from "./theme-toggle";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const { hostCount } = useHostCount();
@@ -12,18 +13,27 @@ export default function Navbar() {
         <Button
           variant="outline"
           className="relative flex h-12 w-12 flex-col p-0"
+          asChild
         >
-          <Network size={20} />
-          <p>LAN</p>
-          {hostCount > 0 && (
-            <div className="absolute right-[-3px] top-[-3px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-primary-foreground">
-              {hostCount}
-            </div>
-          )}
+          <Link to="/">
+            <Network size={20} />
+            <p>LAN</p>
+            {hostCount > 0 && (
+              <div className="absolute right-[-3px] top-[-3px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-primary-foreground">
+                {hostCount}
+              </div>
+            )}
+          </Link>
         </Button>
-        <Button variant="outline" className="flex h-12 w-12 flex-col p-0">
-          <Terminal size={20} />
-          <p>Logs</p>
+        <Button
+          variant="outline"
+          className="flex h-12 w-12 flex-col p-0"
+          asChild
+        >
+          <Link to="/logs">
+            <Terminal size={20} />
+            <p>Logs</p>
+          </Link>
         </Button>
       </div>
       <ThemeToggle />
