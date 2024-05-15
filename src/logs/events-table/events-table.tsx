@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import type { Event } from "@/lan/types";
 import { DataTableColumnToggle } from "@/lan/hosts-table/data-table-column-toggle";
 import DataTablePaginationButtons from "@/lan/hosts-table/data-table-pagination-buttons";
 import { CircleAlert, X } from "lucide-react";
