@@ -1,5 +1,5 @@
 import { columns } from "./logs-table/columns";
-import { EventsTable } from "./logs-table/log-table";
+import { EventsTable } from "./logs-table/events-table";
 import useFetchEvents from "./hooks/use-fetch-events";
 import type { Event } from "@/lan/types";
 
