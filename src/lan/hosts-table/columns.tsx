@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Host, Port, PortScanType } from "../types";
+import { Host, Port, PortScanType } from "@/lan/types";
 import { Badge } from "@/components/ui/badge";
 import {
   Tooltip,
@@ -10,7 +10,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
-import CopyToClipboardButton from "../../components/copy-to-clipboard-button";
+import CopyToClipboardButton from "@/components/copy-to-clipboard-button";
 
 export const columns = (
   detectOs: (targetIps: string[]) => void,

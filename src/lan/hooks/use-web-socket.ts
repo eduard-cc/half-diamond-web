@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EventType, Event, Host } from "../types";
+import { EventType, Event, Host } from "@/lan/types";
 
 export default function useWebSocket(
   updateHosts: (updateFn: (prevData: Host[]) => Host[]) => void,

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Host } from "../types";
+import { Host } from "@/lan/types";
 
 export default function useFetchHosts(setHosts: (hosts: Host[]) => void) {
   const [isPending, setIsPending] = useState(true);
