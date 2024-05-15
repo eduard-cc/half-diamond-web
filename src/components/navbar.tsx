@@ -3,9 +3,14 @@ import { Network, Terminal } from "lucide-react";
 import ThemeToggle from "./theme-toggle";
 import { Link } from "react-router-dom";
 import { useHosts } from "@/providers/hosts-provider";
+import { useEvents } from "@/providers/events-provider";
+import useWebSocket from "@/lan/hooks/use-websocket";
 
 export default function Navbar() {
-  const { onlineHostsCount } = useHosts();
+  const { onlineHostsCount, setHosts } = useHosts();
+  const { setEvents } = useEvents();
+
+  useWebSocket(setHosts, setEvents);
 
   return (
     <nav className="container mx-auto mb-2 flex justify-between pt-5">

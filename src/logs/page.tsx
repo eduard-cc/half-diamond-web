@@ -1,14 +1,10 @@
 import { columns } from "./logs-table/columns";
 import { EventsTable } from "./logs-table/events-table";
 import useFetchEvents from "./hooks/use-fetch-events";
-import type { Event } from "@/lan/types";
+import { useEvents } from "@/providers/events-provider";
 
-type EventsPageProps = {
-  events: Event[];
-  setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
-};
-
-export default function EventsPage({ events, setEvents }: EventsPageProps) {
+export default function EventsPage() {
+  const { events, setEvents } = useEvents();
   const { isPending: fetchIsPending, error: fetchError } =
     useFetchEvents(setEvents);
 
