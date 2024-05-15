@@ -14,7 +14,7 @@ export default function useWebSocket(
   };
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8000/monitor/ws");
+    const socket = new WebSocket("ws://localhost:8000/events/ws");
 
     socket.onmessage = (e) => {
       const event: Event = JSON.parse(e.data);
