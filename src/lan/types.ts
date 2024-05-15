@@ -22,6 +22,7 @@ export type Port = {
 };
 
 export type Event = {
+  time: string;
   type: EventType;
   data: Host;
 };
