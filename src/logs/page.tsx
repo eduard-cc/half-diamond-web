@@ -1,3 +1,4 @@
+import { EventType } from "@/lan/types";
 import { columns } from "./events-table/columns";
 import { EventsTable } from "./events-table/events-table";
 import useFetchEvents from "./hooks/use-fetch-events";
@@ -12,7 +13,7 @@ export default function EventsPage() {
     <div className="container mx-auto py-2">
       <EventsTable
         columns={columns}
-        data={events}
+        data={events.filter((event) => event.type !== EventType.HOST_SEEN)}
         isPending={fetchIsPending}
         error={fetchError}
       />

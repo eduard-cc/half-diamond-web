@@ -31,7 +31,9 @@ export function DataTableFacetedFilter<TData, TValue>({
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
-  const options = Object.values(EventType);
+  const options = Object.values(EventType).filter(
+    (option) => option !== EventType.HOST_SEEN,
+  );
 
   return (
     <Popover>
