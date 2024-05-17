@@ -20,31 +20,10 @@ export function HostCard({ host, children }: HostCardProps) {
     <HoverCard openDelay={300}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent className="w-80">
-        <div className="flex justify-between">
-          {host.name && host.name != "None" && (
-            <p className="font-medium">{host.name}</p>
-          )}
-          <Badge
-            variant="outline"
-            className={`${
-              host.status === "Online"
-                ? "border-green-600/20 bg-green-50 text-green-900 dark:border-green-50/20 dark:bg-green-800/50 dark:text-green-50"
-                : "bg-gray-50 text-gray-700 dark:border-gray-200/20 dark:bg-gray-600/50 dark:text-foreground"
-            }`}
-          >
-            <div className="flex items-center">
-              <span
-                className={`mr-2 inline-block h-2 w-2 rounded-full ${
-                  host.status === "Online"
-                    ? "animate-pulse bg-green-600 dark:bg-green-300"
-                    : "bg-gray-400"
-                }`}
-              ></span>
-              <span>{host.status}</span>
-            </div>
-          </Badge>
-        </div>
-        <div className="mt-4 grid grid-cols-2 gap-4">
+        {host.name && host.name != "None" && (
+          <p className="mb-4 font-medium">{host.name}</p>
+        )}
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <div className="text-muted-foreground">IP</div>
             <CopyToClipboardButton text={host.ip} />
