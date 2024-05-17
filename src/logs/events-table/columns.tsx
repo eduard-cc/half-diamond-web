@@ -6,10 +6,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { HostCard } from "./host-card";
+import { getFormattedDate } from "@/lib/get-formatted-date";
 
 export const eventTypeStyle = {
   [EventType.HOST_SEEN]: "bg-blue-500 text-white",
@@ -40,18 +41,16 @@ export const columns: ColumnDef<Event>[] = [
       );
     },
     cell: ({ row }) => {
-      const date = new Date(row.original.time);
-      const formattedDate = formatDistanceToNow(date, {
-        addSuffix: true,
-        includeSeconds: true,
-      });
+      const dateToLocaleString = new Date(row.original.time).toLocaleString();
       return (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <p className="line-clamp-1 w-fit">{date.toLocaleString()}</p>
+              <p className="line-clamp-1 w-fit">{dateToLocaleString}</p>
             </TooltipTrigger>
-            <TooltipContent>{formattedDate}</TooltipContent>
+            <TooltipContent>
+              {getFormattedDate(row.original.time)}
+            </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       );
@@ -88,5 +87,6 @@ export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: "data",
     header: "Data",
+    cell: ({ row }) => <HostCard host={row.original.data} />,
   },
 ];

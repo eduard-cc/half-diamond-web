@@ -8,9 +8,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Checkbox } from "@/components/ui/checkbox";
-import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import CopyToClipboardButton from "@/components/copy-to-clipboard-button";
+import { getFormattedDate } from "@/lib/get-formatted-date";
 
 export const columns = (
   detectOs: (targetIps: string[]) => void,
@@ -213,11 +213,6 @@ export const columns = (
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const date = new Date(row.original.last_seen);
-      const formattedDate = formatDistanceToNow(date, {
-        addSuffix: true,
-        includeSeconds: true,
-      });
       return (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
@@ -242,7 +237,9 @@ export const columns = (
                 </div>
               </Badge>
             </TooltipTrigger>
-            <TooltipContent>last seen {formattedDate}</TooltipContent>
+            <TooltipContent>
+              last seen {getFormattedDate(row.original.last_seen)}
+            </TooltipContent>
           </Tooltip>
         </TooltipProvider>
       );
