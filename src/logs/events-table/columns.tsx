@@ -11,6 +11,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HostCard } from "./host-card";
 import { getFormattedDate } from "@/lib/get-formatted-date";
+import EventDescription from "./event-description";
 
 export const eventTypeStyle = {
   [EventType.HOST_SEEN]: "bg-blue-500 text-white",
@@ -87,6 +88,30 @@ export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: "data",
     header: "Data",
-    cell: ({ row }) => <HostCard host={row.original.data} />,
+    cell: ({ row }) => (
+      <EventDescription eventType={row.original.type} host={row.original.data}>
+        {" "}
+        <span>
+          <HostCard host={row.original.data}>
+            <span className="font-medium text-primary underline-offset-4 hover:cursor-pointer hover:underline">
+              {row.original.data.ip}
+            </span>
+          </HostCard>
+          {row.original.data.name != "None" && (
+            <>
+              {" "}
+              <Badge
+                variant={
+                  row.original.data.name === "Gateway" ? "secondary" : "outline"
+                }
+                className="px-1 py-0"
+              >
+                {row.original.data.name}
+              </Badge>
+            </>
+          )}
+        </span>
+      </EventDescription>
+    ),
   },
 ];
