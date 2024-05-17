@@ -46,18 +46,19 @@ export const columns = (
     accessorKey: "ip",
     header: "IP",
     cell: ({ row }) => {
-      if (row.original.name === "None") {
-        return <CopyToClipboardButton text={row.original.ip} />;
-      }
       return (
         <>
           <CopyToClipboardButton text={row.original.ip} />
-          <Badge
-            variant={row.original.name === "Gateway" ? "secondary" : "outline"}
-            className="ml-2"
-          >
-            {row.original.name}
-          </Badge>
+          {row.original.name != "None" && (
+            <Badge
+              variant={
+                row.original.name === "Gateway" ? "secondary" : "outline"
+              }
+              className="ml-2"
+            >
+              {row.original.name}
+            </Badge>
+          )}
         </>
       );
     },
@@ -73,24 +74,24 @@ export const columns = (
     accessorKey: "vendor",
     header: "Vendor",
     cell: ({ row }) => {
-      if (row.getValue("vendor") === "Unknown") {
-        return (
-          <p className="text-muted-foreground">{row.getValue("vendor")}</p>
-        );
-      } else {
-        return (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <p className="line-clamp-1 w-fit">{row.getValue("vendor")}</p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{row.getValue("vendor")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        );
-      }
+      return (
+        <>
+          {row.getValue("vendor") === "Unknown" ? (
+            <p className="text-muted-foreground">{row.getValue("vendor")}</p>
+          ) : (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <p className="line-clamp-1 w-fit">{row.getValue("vendor")}</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{row.getValue("vendor")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </>
+      );
     },
   },
   {
@@ -139,36 +140,32 @@ export const columns = (
     header: "Open ports",
     cell: ({ row }) => {
       const openPorts = row.getValue("open_ports") as Port[];
-      if (!openPorts || openPorts.length === 0) {
-        return (
-          <TooltipProvider delayDuration={0}>
-            <Tooltip>
-              <TooltipTrigger>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="p-0 text-sm text-muted-foreground"
-                  onClick={() => scanPorts([row.original.ip], scanType)}
-                  disabled={portsIsPending}
-                >
-                  {!openPorts ? "Unknown" : "None"}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {portsIsPending ? "Scanning ports..." : "Scan ports"}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        );
-      } else {
-        return (
-          <div className="flex flex-wrap gap-1">
-            {openPorts.map((port) => (
-              <PortBadge key={port.port} port={port} />
-            ))}
-          </div>
-        );
-      }
+      return !openPorts || openPorts.length === 0 ? (
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="link"
+                size="sm"
+                className="p-0 text-sm text-muted-foreground"
+                onClick={() => scanPorts([row.original.ip], scanType)}
+                disabled={portsIsPending}
+              >
+                {!openPorts ? "Unknown" : "None"}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {portsIsPending ? "Scanning ports..." : "Scan ports"}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        <div className="flex flex-wrap gap-1">
+          {openPorts.map((port) => (
+            <PortBadge key={port.port} port={port} />
+          ))}
+        </div>
+      );
     },
   },
   {
