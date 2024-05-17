@@ -67,7 +67,9 @@ export const columns = (
     accessorKey: "mac",
     header: "MAC",
     cell: ({ row }) => {
-      return <CopyToClipboardButton text={row.getValue("mac")} />;
+      return (
+        <CopyToClipboardButton text={row.original.mac.toLocaleUpperCase()} />
+      );
     },
   },
   {

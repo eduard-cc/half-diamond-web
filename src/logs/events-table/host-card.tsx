@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
@@ -11,14 +10,15 @@ import { getFormattedDate } from "@/lib/get-formatted-date";
 import CopyToClipboardButton from "@/components/copy-to-clipboard-button";
 import PortBadge from "@/components/port-badge";
 
-export function HostCard({ host }: { host: Host }) {
+type HostCardProps = {
+  host: Host;
+  children: React.ReactNode;
+};
+
+export function HostCard({ host, children }: HostCardProps) {
   return (
     <HoverCard openDelay={300}>
-      <HoverCardTrigger asChild>
-        <Button variant="link" className="px-0 font-normal">
-          {host.ip}
-        </Button>
-      </HoverCardTrigger>
+      <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent className="w-80">
         <div className="flex justify-between">
           {host.name && host.name != "None" && (
@@ -51,7 +51,7 @@ export function HostCard({ host }: { host: Host }) {
           </div>
           <div>
             <div className="text-muted-foreground">MAC</div>
-            <CopyToClipboardButton text={host.mac} />
+            <CopyToClipboardButton text={host.mac.toLocaleUpperCase()} />
           </div>
           <div>
             <div className="text-muted-foreground">OS</div>
