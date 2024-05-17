@@ -24,6 +24,7 @@ import DataTablePaginationButtons from "@/lan/hosts-table/data-table-pagination-
 import { CircleAlert, X } from "lucide-react";
 import { DataTableFacetedFilter } from "./events-table-faceted-filter";
 import { Button } from "@/components/ui/button";
+import { Event } from "@/lan/types";
 
 type EventsTableProps<TData extends Event, TValue> = {
   columns: ColumnDef<TData, TValue>[];
