@@ -26,7 +26,7 @@ export default function CopyToClipboardButton({ text }: { text: string }) {
         <TooltipTrigger asChild ref={triggerRef} onClick={handleCopy}>
           <Button
             variant="link"
-            className="w-fit p-0 text-sm font-normal"
+            className="h-5 w-fit p-0 text-sm font-normal"
             size="sm"
           >
             {text}
