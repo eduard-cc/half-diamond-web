@@ -18,7 +18,7 @@ export default function useWebSocket(
 
     socket.onmessage = (e) => {
       const event: Event = JSON.parse(e.data);
-      updateEvents((prevEvents) => [...prevEvents, event]);
+      updateEvents((prevEvents) => [event, ...prevEvents]);
 
       if (event.type === EventType.HOST_NEW) {
         updateHosts((prevData) => [...prevData, event.data]);
