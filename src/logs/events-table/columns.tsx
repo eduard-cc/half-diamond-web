@@ -12,18 +12,27 @@ import { Button } from "@/components/ui/button";
 import { HostCard } from "./host-card";
 import { getFormattedDate } from "@/lib/get-formatted-date";
 import EventDescription from "./event-description";
+import { cn } from "@/lib/utils";
 
 export const eventTypeStyle = {
-  [EventType.HOST_SEEN]: "bg-blue-500 text-white",
-  [EventType.HOST_CONNECTED]: "bg-green-500 text-white",
+  [EventType.HOST_SEEN]:
+    "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
+  [EventType.HOST_CONNECTED]:
+    "bg-green-200/40 text-green-950 dark:text-green-50 dark:bg-green-600/40 border-green-900/20 dark:border-stone-50/10",
   [EventType.HOST_DISCONNECTED]:
-    "bg-gray-50 text-gray-700 dark:border-gray-200/20 dark:bg-gray-600/50 dark:text-foreground",
-  [EventType.HOST_NEW]: "bg-yellow-500 text-white",
-  [EventType.SCAN_TCP]: "bg-purple-500 text-white",
-  [EventType.SCAN_SYN]: "bg-red-500 text-white",
-  [EventType.SCAN_UDP]: "bg-orange-500 text-white",
-  [EventType.OS_DETECTED]: "bg-teal-500 text-white",
-  default: "bg-gray-500 text-white",
+    "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
+  [EventType.HOST_NEW]:
+    "bg-amber-200/40 text-amber-950 dark:text-amber-50 dark:bg-amber-600/40 border-amber-900/20 dark:border-stone-50/10",
+  [EventType.SCAN_SYN]:
+    "bg-cyan-200/40 text-cyan-950 dark:text-cyan-50 dark:bg-cyan-600/40 border-cyan-900/20 dark:border-stone-50/10",
+  [EventType.SCAN_TCP]:
+    "bg-blue-200/40 text-blue-950 dark:text-blue-50 dark:bg-blue-600/40 border-blue-900/20 dark:border-stone-50/10",
+  [EventType.SCAN_UDP]:
+    "bg-violet-200/40 text-violet-950 dark:text-violet-50 dark:bg-violet-600/40 border-violet-900/20 dark:border-stone-50/10",
+  [EventType.OS_DETECTED]:
+    "bg-fuchsia-200/40 text-fuchsia-950 dark:text-fuchsia-50 dark:bg-fuchsia-600/40 border-fuchsia-900/20 dark:border-stone-50/10",
+  default:
+    "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
 };
 
 export const columns: ColumnDef<Event>[] = [
@@ -79,7 +88,7 @@ export const columns: ColumnDef<Event>[] = [
       const badgeStyle =
         eventTypeStyle[row.original.type] || eventTypeStyle.default;
       return (
-        <Badge className={badgeStyle} variant="outline">
+        <Badge variant="outline" className={cn(badgeStyle, "")}>
           {row.original.type}
         </Badge>
       );

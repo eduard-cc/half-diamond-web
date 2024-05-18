@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { EventType } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Fragment } from "react/jsx-runtime";
+import { eventTypeStyle } from "./columns";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -126,7 +127,15 @@ export function DataTableFacetedFilter<TData, TValue>({
                             >
                               <Check className={cn("h-4 w-4")} />
                             </div>
-                            <span>{option}</span>
+                            <Badge
+                              className={cn(
+                                eventTypeStyle[option] ||
+                                  eventTypeStyle.default,
+                                "hover:bg-[sameColor]",
+                              )}
+                            >
+                              {option}
+                            </Badge>
                             {facets?.get(option) && (
                               <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                                 {facets.get(option)}
