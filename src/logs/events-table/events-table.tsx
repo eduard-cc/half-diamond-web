@@ -74,9 +74,13 @@ export function EventsTable<TData extends Event, TValue>({
         )}
       </div>
       <div className="rounded-md border">
-        <ScrollArea className="h-[40rem]">
+        <ScrollArea
+          className={
+            table.getRowModel().rows?.length > 10 ? "h-[40rem]" : "h-auto"
+          }
+        >
           <Table>
-            <TableHeader className="sticky top-0 border-b bg-background">
+            <TableHeader className="sticky top-0 z-10 border-b bg-background">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
