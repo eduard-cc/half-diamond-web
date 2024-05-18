@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import { CircleAlert, X } from "lucide-react";
-import { DataTableFacetedFilter } from "./events-table-faceted-filter";
+import { EventsTableFacetedFilter } from "./events-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { Event } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -61,7 +61,10 @@ export function EventsTable<TData extends Event, TValue>({
   return (
     <>
       <div className="mb-2 flex justify-between">
-        <DataTableFacetedFilter column={table.getColumn("type")} title="Type" />
+        <EventsTableFacetedFilter
+          column={table.getColumn("type")}
+          title="Type"
+        />
         {isFiltered && (
           <Button
             variant="ghost"

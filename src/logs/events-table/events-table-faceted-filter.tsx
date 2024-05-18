@@ -23,7 +23,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Fragment } from "react/jsx-runtime";
 import { eventTypeStyle } from "./columns";
 
-interface DataTableFacetedFilterProps<TData, TValue> {
+interface EventsTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
   title?: string;
 }
@@ -38,10 +38,10 @@ const eventGroups = {
   "OS Events": [EventType.OS_DETECTED],
 };
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function EventsTableFacetedFilter<TData, TValue>({
   column,
   title,
-}: DataTableFacetedFilterProps<TData, TValue>) {
+}: EventsTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
   const options = Object.values(EventType).filter(
