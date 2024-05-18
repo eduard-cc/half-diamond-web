@@ -16,12 +16,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CircleAlert, X } from "lucide-react";
 import { EventsTableFacetedFilter } from "./events-table-faceted-filter";
 import { Button } from "@/components/ui/button";
 import { Event } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { HostsFacetedFilter } from "./hosts-faceted-filter";
 
 type EventsTableProps<TData extends Event, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -58,12 +59,27 @@ export function EventsTable<TData extends Event, TValue>({
 
   const isFiltered = table.getState().columnFilters.length > 0;
 
+  const options = useMemo(() => {
+    return Array.from(
+      new Set(
+        data.map((event) =>
+          JSON.stringify({ mac: event.data.mac, ip: event.data.ip }),
+        ),
+      ),
+    ).map((option) => JSON.parse(option));
+  }, [data]);
+
   return (
     <>
-      <div className="mb-2 flex justify-between">
+      <div className="mb-2 flex gap-2">
         <EventsTableFacetedFilter
           column={table.getColumn("type")}
           title="Type"
+        />
+        <HostsFacetedFilter
+          column={table.getColumn("data")}
+          title="Host IP"
+          hosts={options}
         />
         {isFiltered && (
           <Button
