@@ -30,7 +30,6 @@ interface DataTableFacetedFilterProps<TData, TValue> {
 const eventGroups = {
   "Host Events": [
     EventType.HOST_NEW,
-    EventType.HOST_SEEN,
     EventType.HOST_CONNECTED,
     EventType.HOST_DISCONNECTED,
   ],
