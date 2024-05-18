@@ -5,7 +5,6 @@ import {
 } from "@/components/ui/hover-card";
 import { Host } from "@/lan/types";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import { getFormattedDate } from "@/lib/get-formatted-date";
 import CopyToClipboardButton from "@/components/copy-to-clipboard-button";
 import PortBadge from "@/components/port-badge";
