@@ -87,7 +87,7 @@ export const columns: ColumnDef<Event>[] = [
   },
   {
     accessorKey: "data",
-    header: "Data",
+    header: "Description",
     cell: ({ row }) => (
       <EventDescription eventType={row.original.type} host={row.original.data}>
         {" "}
