@@ -29,13 +29,13 @@ interface EventsTableFacetedFilterProps<TData, TValue> {
 }
 
 const eventGroups = {
-  "Host Events": [
+  "Host events": [
     EventType.HOST_NEW,
     EventType.HOST_CONNECTED,
     EventType.HOST_DISCONNECTED,
   ],
-  "Scan Events": [EventType.SCAN_SYN, EventType.SCAN_TCP, EventType.SCAN_UDP],
-  "OS Events": [EventType.OS_DETECTED],
+  "Scan events": [EventType.SCAN_SYN, EventType.SCAN_TCP, EventType.SCAN_UDP],
+  "OS events": [EventType.OS_DETECTED],
 };
 
 export function EventsTableFacetedFilter<TData, TValue>({
