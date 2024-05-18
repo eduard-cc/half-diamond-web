@@ -1,5 +1,5 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { Event, EventType } from "@/lan/types";
+import { Event, EventType, Host } from "@/lan/types";
 import {
   Tooltip,
   TooltipContent,
@@ -97,6 +97,10 @@ export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: "data",
     header: "Description",
+    filterFn: (row: Row<Event>, columnId: string, filterValue: any[]) => {
+      const rowValue = (row.original[columnId as keyof Event] as Host).mac;
+      return filterValue.includes(rowValue);
+    },
     cell: ({ row }) => (
       <EventDescription eventType={row.original.type} host={row.original.data}>
         {" "}
