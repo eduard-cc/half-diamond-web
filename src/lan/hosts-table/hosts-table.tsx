@@ -84,7 +84,7 @@ export function HostsTable<TData extends Host, TValue>({
         <div className="flex gap-2">{children}</div>
         <DataTableColumnToggle table={table} />
       </div>
-      <div className="rounded-md border">
+      <div className="relative w-full overflow-auto rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
