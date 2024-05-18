@@ -20,6 +20,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { EventType } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Fragment } from "react/jsx-runtime";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -96,8 +97,8 @@ export function DataTableFacetedFilter<TData, TValue>({
               <CommandEmpty>No results found.</CommandEmpty>
               {Object.entries(eventGroups).map(
                 ([heading, eventTypes], index, array) => (
-                  <>
-                    <CommandGroup heading={heading} key={heading}>
+                  <Fragment key={heading}>
+                    <CommandGroup heading={heading}>
                       {eventTypes.map((eventType) => {
                         const option = eventType;
                         const isSelected = selectedValues.has(option);
@@ -139,7 +140,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     {index < array.length - 1 && (
                       <CommandSeparator className="mr-1" />
                     )}
-                  </>
+                  </Fragment>
                 ),
               )}
             </CommandList>
