@@ -14,9 +14,13 @@ export default function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className="h-12 w-12"
+      className="h-14 w-14"
     >
-      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+      {theme === "dark" ? (
+        <Sun className="h-5 w-5" />
+      ) : (
+        <Moon className="h-5 w-5" />
+      )}
       <span className="sr-only">Toggle theme</span>
     </Button>
   );
