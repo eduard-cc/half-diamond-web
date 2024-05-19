@@ -4,6 +4,8 @@ import type { Event } from "@/lan/types";
 type EventsProviderState = {
   events: Event[];
   setEvents: React.Dispatch<React.SetStateAction<Event[]>>;
+  newEventsCount: number;
+  setNewEventsCount: React.Dispatch<React.SetStateAction<number>>;
 };
 
 type EventsProviderProps = {
@@ -13,15 +15,25 @@ type EventsProviderProps = {
 const initialState: EventsProviderState = {
   events: [],
   setEvents: () => null,
+  newEventsCount: 0,
+  setNewEventsCount: () => null,
 };
 
 const EventsContext = createContext<EventsProviderState>(initialState);
 
 export function EventsProvider({ children }: EventsProviderProps) {
   const [events, setEvents] = useState<Event[]>([]);
+  const [newEventsCount, setNewEventsCount] = useState<number>(0);
 
   return (
-    <EventsContext.Provider value={{ events, setEvents }}>
+    <EventsContext.Provider
+      value={{
+        events,
+        setEvents,
+        newEventsCount,
+        setNewEventsCount,
+      }}
+    >
       {children}
     </EventsContext.Provider>
   );

@@ -5,6 +5,7 @@ import { toast } from "@/components/ui/use-toast";
 export default function useWebSocket(
   updateHosts: (updateFn: (prevData: Host[]) => Host[]) => void,
   updateEvents: (updateFn: (prevData: Event[]) => Event[]) => void,
+  setNewEventsCount: (updateFn: (prevData: number) => number) => void,
 ) {
   const mergeProps = (host: Host, updatedProperties: Partial<Host>) => {
     return {
@@ -19,6 +20,12 @@ export default function useWebSocket(
     socket.onmessage = (e) => {
       const event: Event = JSON.parse(e.data);
       updateEvents((prevEvents) => [event, ...prevEvents]);
+      if (
+        event.type !== EventType.HOST_SEEN &&
+        window.location.pathname !== "/events"
+      ) {
+        setNewEventsCount((prevCount) => prevCount + 1);
+      }
 
       if (event.type === EventType.HOST_NEW) {
         updateHosts((prevData) => [...prevData, event.data]);

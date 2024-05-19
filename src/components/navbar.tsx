@@ -7,13 +7,20 @@ import { useEvents } from "@/providers/events-provider";
 import useWebSocket from "@/lan/hooks/use-websocket";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 export default function Navbar() {
   const location = useLocation();
   const { onlineHostsCount, setHosts } = useHosts();
-  const { setEvents } = useEvents();
+  const { newEventsCount, setEvents, setNewEventsCount } = useEvents();
 
-  useWebSocket(setHosts, setEvents);
+  useEffect(() => {
+    if (location.pathname === "/events") {
+      setNewEventsCount(0);
+    }
+  }, [location.pathname, setNewEventsCount]);
+
+  useWebSocket(setHosts, setEvents, setNewEventsCount);
 
   return (
     <nav className="container mx-auto flex justify-between pt-6">
@@ -30,7 +37,7 @@ export default function Navbar() {
             <Network className="h-5 w-5" />
             <p>LAN</p>
             {onlineHostsCount > 0 && (
-              <div className="absolute right-[-3px] top-[-3px] rounded-full bg-primary px-[6px] py-[2px] text-xs text-primary-foreground">
+              <div className="absolute right-[-3px] top-[-3px] min-w-[20px] rounded-full bg-primary px-[6px] py-[2px] text-center text-xs text-primary-foreground">
                 {onlineHostsCount}
               </div>
             )}
@@ -39,7 +46,7 @@ export default function Navbar() {
         <Button
           variant="outline"
           className={cn(
-            "flex h-14 w-14 flex-col p-0 text-muted-foreground",
+            "relative flex h-14 w-14 flex-col p-0 text-muted-foreground",
             location.pathname === "/events" && "bg-secondary text-foreground",
           )}
           asChild
@@ -47,6 +54,11 @@ export default function Navbar() {
           <Link to="/events">
             <ScrollText className="h-5 w-5" />
             <p>Events</p>
+            {newEventsCount > 0 && (
+              <div className="absolute right-[-3px] top-[-3px] min-w-[20px] rounded-full bg-primary px-[6px] py-[2px] text-center text-xs text-primary-foreground">
+                {newEventsCount}
+              </div>
+            )}
           </Link>
         </Button>
       </div>
