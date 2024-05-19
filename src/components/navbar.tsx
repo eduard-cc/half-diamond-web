@@ -37,7 +37,8 @@ export default function Navbar() {
             <Network className="h-5 w-5" />
             <p>LAN</p>
             {onlineHostsCount > 0 && (
-              <div className="absolute right-[-3px] top-[-3px] min-w-[20px] rounded-full bg-primary px-[6px] py-[2px] text-center text-xs text-primary-foreground">
+              <div className="absolute right-[-7px] top-[-7px] min-w-[20px] rounded-full border border-green-900/20 bg-green-200/80 px-[6px] py-[2px] text-center text-xs text-green-950 dark:border-stone-50/10 dark:bg-green-800 dark:text-green-50">
+                <span className="mr-1 inline-block h-2 w-2 animate-pulse rounded-full bg-green-600 dark:bg-green-300"></span>
                 {onlineHostsCount}
               </div>
             )}
@@ -55,7 +56,7 @@ export default function Navbar() {
             <ScrollText className="h-5 w-5" />
             <p>Events</p>
             {newEventsCount > 0 && (
-              <div className="absolute right-[-3px] top-[-3px] min-w-[20px] rounded-full bg-primary px-[6px] py-[2px] text-center text-xs text-primary-foreground">
+              <div className="absolute right-[-7px] top-[-7px] min-w-[20px] rounded-full bg-primary px-[6px] py-[2px] text-center text-xs text-primary-foreground">
                 {newEventsCount}
               </div>
             )}

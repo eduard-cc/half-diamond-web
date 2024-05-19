@@ -182,7 +182,7 @@ export const columns = (
                 variant="outline"
                 className={`${
                   row.original.status === "Online"
-                    ? "border-green-900/20 bg-green-200/40 text-green-950 dark:border-stone-50/10 dark:bg-green-600/40 dark:text-green-50"
+                    ? "border-green-900/20 bg-green-200/40 text-green-950 dark:border-green-50/10 dark:bg-green-600/40 dark:text-green-50"
                     : "border-stone-900/20 bg-stone-200/40 text-stone-950 dark:border-stone-50/10 dark:bg-stone-600/40 dark:text-stone-50"
                 }`}
               >
