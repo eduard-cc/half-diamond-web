@@ -21,14 +21,13 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { useMemo, useState } from "react";
-import { EventType } from "@/lan/types";
 
 type FacetedFilterProps<TData, TValue> = {
   column?: Column<TData, TValue>;
   title: string;
   options: {
     label: string;
-    value: string | EventType;
+    value: string;
     component: React.ComponentType<{ label: string }>;
   }[];
   headers?: {
@@ -44,8 +43,35 @@ export function FacetedFilter<TData, TValue>({
   headers,
 }: FacetedFilterProps<TData, TValue>) {
   const [search, setSearch] = useState("");
-  const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
+
+  const getFacets = (column?: Column<TData, TValue>) => {
+    const facets = column?.getFacetedUniqueValues();
+
+    if (!facets) {
+      return undefined;
+    }
+
+    const facetsArray = Array.from<[any, number], { key: any; value: number }>(
+      facets,
+      ([key, value]) => ({ key, value }),
+    );
+
+    if (typeof facetsArray[0]?.key === "object") {
+      const ipCount = facetsArray.reduce<Map<string, number>>((acc, facet) => {
+        const ip = facet.key.ip;
+        if (!acc.has(ip)) {
+          acc.set(ip, 0);
+        }
+        acc.set(ip, acc.get(ip)! + 1);
+        return acc;
+      }, new Map());
+      return ipCount;
+    }
+
+    return facets;
+  };
+  const facets = getFacets(column);
 
   const filteredOptions = useMemo(() => {
     if (headers) {
@@ -66,7 +92,7 @@ export function FacetedFilter<TData, TValue>({
           }
         })
       : options;
-  }, [search, headers]);
+  }, [search]);
 
   const renderCommandItem = (option: {
     label: string;
@@ -101,9 +127,11 @@ export function FacetedFilter<TData, TValue>({
           <Check className={cn("h-4 w-4")} />
         </div>
         <LabelComponent label={option.label} />
-        {facets?.get(option.value) && (
-          <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-            {facets.get(option.value)}
+        {facets && (
+          <span className="ml-auto flex h-4 w-4 items-center justify-center pl-4 pr-2 font-mono text-xs">
+            {(typeof facets.keys().next().value === "string" &&
+              facets.get(option.value)) ||
+              facets.get(option.label)}
           </span>
         )}
       </CommandItem>
@@ -145,11 +173,11 @@ export function FacetedFilter<TData, TValue>({
               <Separator orientation="vertical" className="mx-2 h-4" />
               <Badge
                 variant="secondary"
-                className="rounded-sm px-1 font-normal lg:hidden"
+                className="rounded-sm px-1 font-normal md:hidden"
               >
                 {selectedValues.size}
               </Badge>
-              <div className="hidden space-x-1 lg:flex">
+              <div className="hidden space-x-1 md:flex">
                 {selectedValues.size > 2 ? (
                   <Badge
                     variant="secondary"
