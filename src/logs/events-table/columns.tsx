@@ -14,23 +14,36 @@ import { getFormattedDate } from "@/lib/get-formatted-date";
 import EventDescription from "./event-description";
 import { cn } from "@/lib/utils";
 
-export const eventTypeStyle = {
+type EventTypeStyle = {
+  [EventType.HOST_SEEN]: string;
+  [EventType.HOST_CONNECTED]: string;
+  [EventType.HOST_DISCONNECTED]: string;
+  [EventType.HOST_NEW]: string;
+  [EventType.SCAN_SYN]: string;
+  [EventType.SCAN_TCP]: string;
+  [EventType.SCAN_UDP]: string;
+  [EventType.OS_DETECTED]: string;
+  default: string;
+  [key: string]: string;
+};
+
+export const eventTypeStyle: EventTypeStyle = {
   [EventType.HOST_SEEN]:
     "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
   [EventType.HOST_CONNECTED]:
-    "bg-green-200/40 text-green-950 dark:text-green-50 dark:bg-green-600/40 border-green-900/20 dark:border-stone-50/10",
+    "bg-green-200/40 text-green-950 dark:text-green-50 dark:bg-green-600/40 border-green-900/20 dark:border-green-50/10",
   [EventType.HOST_DISCONNECTED]:
     "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
   [EventType.HOST_NEW]:
-    "bg-amber-200/40 text-amber-950 dark:text-amber-50 dark:bg-amber-600/40 border-amber-900/20 dark:border-stone-50/10",
+    "bg-yellow-200/40 text-yellow-950 dark:text-yellow-50 dark:bg-yellow-600/40 border-yellow-900/20 dark:border-yellow-50/10",
   [EventType.SCAN_SYN]:
-    "bg-cyan-200/40 text-cyan-950 dark:text-cyan-50 dark:bg-cyan-600/40 border-cyan-900/20 dark:border-stone-50/10",
+    "bg-cyan-200/40 text-cyan-950 dark:text-cyan-50 dark:bg-cyan-600/40 border-cyan-900/20 dark:border-cyan-50/10",
   [EventType.SCAN_TCP]:
-    "bg-blue-200/40 text-blue-950 dark:text-blue-50 dark:bg-blue-600/40 border-blue-900/20 dark:border-stone-50/10",
+    "bg-blue-200/40 text-blue-950 dark:text-blue-50 dark:bg-blue-600/40 border-blue-900/20 dark:border-blue-50/10",
   [EventType.SCAN_UDP]:
-    "bg-violet-200/40 text-violet-950 dark:text-violet-50 dark:bg-violet-600/40 border-violet-900/20 dark:border-stone-50/10",
+    "bg-violet-200/40 text-violet-950 dark:text-violet-50 dark:bg-violet-600/40 border-violet-900/20 dark:border-violet-50/10",
   [EventType.OS_DETECTED]:
-    "bg-fuchsia-200/40 text-fuchsia-950 dark:text-fuchsia-50 dark:bg-fuchsia-600/40 border-fuchsia-900/20 dark:border-stone-50/10",
+    "bg-fuchsia-200/40 text-fuchsia-950 dark:text-fuchsia-50 dark:bg-fuchsia-600/40 border-fuchsia-900/20 dark:border-fuchsia-50/10",
   default:
     "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
 };
