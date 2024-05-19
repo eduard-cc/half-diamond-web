@@ -128,7 +128,7 @@ export function FacetedFilter<TData, TValue>({
         </div>
         <LabelComponent label={option.label} />
         {facets && (
-          <span className="ml-auto flex h-4 w-4 items-center justify-center pl-4 pr-2 font-mono text-xs">
+          <span className="ml-auto flex h-4 w-4 items-center justify-center pl-4 pr-2 font-mono text-xs font-semibold">
             {(typeof facets.keys().next().value === "string" &&
               facets.get(option.value)) ||
               facets.get(option.label)}
@@ -215,7 +215,7 @@ export function FacetedFilter<TData, TValue>({
                   onValueChange={setSearch}
                 />
               )}
-              <ScrollArea className="h-80">
+              <ScrollArea className="h-80" type="auto">
                 <CommandList className="max-h-full w-full pr-2">
                   {renderCommandList()}
                 </CommandList>
