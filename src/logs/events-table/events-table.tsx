@@ -18,11 +18,13 @@ import {
 } from "@/components/ui/table";
 import { useMemo, useState } from "react";
 import { CircleAlert, X } from "lucide-react";
-import { EventsTableFacetedFilter } from "./events-table-faceted-filter";
 import { Button } from "@/components/ui/button";
-import { Event } from "@/lan/types";
+import { Event, EventType } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { HostsFacetedFilter } from "./hosts-faceted-filter";
+import { FacetedFilter } from "./faceted-filter";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { eventTypeStyle } from "./columns";
 
 type EventsTableProps<TData extends Event, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -59,27 +61,90 @@ export function EventsTable<TData extends Event, TValue>({
 
   const isFiltered = table.getState().columnFilters.length > 0;
 
-  const options = useMemo(() => {
-    return Array.from(
-      new Set(
-        data.map((event) =>
-          JSON.stringify({ mac: event.data.mac, ip: event.data.ip }),
-        ),
-      ),
-    ).map((option) => JSON.parse(option));
+  const hostsOptions = useMemo(() => {
+    const uniqueHosts = new Map(
+      data.map((event) => {
+        const key = `${event.data.mac}-${event.data.ip}`;
+        return [key, { mac: event.data.mac, ip: event.data.ip }];
+      }),
+    );
+
+    return Array.from(uniqueHosts.values())
+      .sort((a, b) => {
+        const ipA = a.ip.split(".").map(Number);
+        const ipB = b.ip.split(".").map(Number);
+
+        for (let i = 0; i < ipA.length; i++) {
+          if (ipA[i] < ipB[i]) {
+            return -1;
+          }
+          if (ipA[i] > ipB[i]) {
+            return 1;
+          }
+        }
+
+        return 0;
+      })
+      .map(({ mac, ip }) => ({
+        label: ip,
+        value: mac,
+        component: ({ label }: { label: string }) => <span>{label}</span>,
+      }));
   }, [data]);
+
+  const EventTypeBadge = ({ label }: { label: string }) => (
+    <Badge
+      className={cn(
+        eventTypeStyle[label] || eventTypeStyle.default,
+        "hover:bg-[sameColor]",
+      )}
+    >
+      {label}
+    </Badge>
+  );
+
+  const eventTypeOptions = useMemo(() => {
+    return Object.entries(EventType)
+      .filter(([key]) => key !== EventType.HOST_SEEN)
+      .map(([_, value]) => ({
+        label: value,
+        value: value,
+        component: EventTypeBadge,
+      }));
+  }, []);
+
+  const eventGroups = [
+    {
+      title: "Host events",
+      group: [
+        EventType.HOST_NEW,
+        EventType.HOST_CONNECTED,
+        EventType.HOST_DISCONNECTED,
+      ],
+    },
+    {
+      title: "Scan events",
+      group: [EventType.SCAN_SYN, EventType.SCAN_TCP, EventType.SCAN_UDP],
+    },
+    {
+      title: "OS events",
+      group: [EventType.OS_DETECTED],
+    },
+  ];
 
   return (
     <>
       <div className="mb-2 flex gap-2">
-        <EventsTableFacetedFilter
+        <FacetedFilter
           column={table.getColumn("type")}
           title="Type"
+          options={eventTypeOptions}
+          headers={eventGroups}
         />
-        <HostsFacetedFilter
+        <FacetedFilter
           column={table.getColumn("data")}
           title="Host IP"
-          hosts={options}
+          options={hostsOptions}
         />
         {isFiltered && (
           <Button
