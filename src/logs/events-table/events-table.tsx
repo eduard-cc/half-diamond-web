@@ -215,7 +215,7 @@ export function EventsTable<TData extends Event, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="max-w-64">
+                      <TableCell key={cell.id} className="p-3">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),

@@ -34,7 +34,7 @@ export default function EventDescription({
   );
 
   return (
-    <>
+    <div className="m-1">
       {eventType === EventType.HOST_NEW ? (
         <p>New host discovered: {children}</p>
       ) : eventType === EventType.HOST_SEEN ? (
@@ -60,6 +60,6 @@ export default function EventDescription({
           OS detected from {children} as {host.os}.
         </p>
       ) : null}
-    </>
+    </div>
   );
 }

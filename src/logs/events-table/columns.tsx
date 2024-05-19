@@ -56,7 +56,7 @@ export const columns: ColumnDef<Event>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="-m-4"
+          className="-m-5"
         >
           Time
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -86,7 +86,7 @@ export const columns: ColumnDef<Event>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="-m-4"
+          className="-m-5"
         >
           Type
           <ArrowUpDown className="ml-2 h-4 w-4" />
