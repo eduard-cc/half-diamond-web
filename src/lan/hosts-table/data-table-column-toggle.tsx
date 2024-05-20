@@ -5,10 +5,8 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Settings2 } from "lucide-react";
+import { ListFilter } from "lucide-react";
 
 type DataTableColumnToggleProps<TData> = {
   table: Table<TData>;
@@ -29,13 +27,13 @@ export function DataTableColumnToggle<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-8" size="sm">
-          <Settings2 className="mr-2 h-4 w-4" />
-          View
+          <ListFilter className="mr-2 h-4 w-4" />
+          Toggle columns
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      <DropdownMenuContent
+        style={{ width: "var(--radix-dropdown-menu-trigger-width)" }}
+      >
         {table
           .getAllColumns()
           .filter((column) => column.getCanHide() && column.id !== "select")

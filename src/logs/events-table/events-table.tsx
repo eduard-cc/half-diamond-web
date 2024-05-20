@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMemo, useState } from "react";
-import { X } from "lucide-react";
+import { FilterX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Event, EventType } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -154,8 +154,8 @@ export function EventsTable<TData extends Event, TValue>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            Reset
-            <X className="ml-2 h-4 w-4" />
+            Clear all filters
+            <FilterX className="ml-2 h-4 w-4" />
           </Button>
         )}
       </div>
