@@ -17,6 +17,7 @@ export default function HostsPage() {
 
   const monitor = useModule("monitor");
   const probe = useModule("probe");
+  const arpSpoof = useModule("arp-spoof");
 
   const { isPending: fetchIsPending, error: fetchError } =
     useFetchHosts(setHosts);
@@ -41,7 +42,11 @@ export default function HostsPage() {
         monitor={monitor}
         setSelectedIps={setSelectedIps}
       >
-        <ModuleLauncherToolbar monitor={monitor} probe={probe} />
+        <ModuleLauncherToolbar
+          monitor={monitor}
+          probe={probe}
+          arpSpoof={arpSpoof}
+        />
         <TaskLauncherToolbar
           targetIps={selectedIps}
           detectOs={detectOs}

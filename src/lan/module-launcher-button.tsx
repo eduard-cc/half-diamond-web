@@ -12,8 +12,8 @@ import { cn } from "@/lib/utils";
 
 type ModuleLauncherButtonProps = {
   module: Module;
-  onClick: () => void;
-  moduleName: "Monitor" | "Probe";
+  onClick?: () => void;
+  moduleName: "Monitor" | "Probe" | "ARP Spoof";
   monitorIsRunning?: boolean;
 };
 
@@ -64,14 +64,14 @@ export default function ModuleLauncherButton({
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent side="bottom">
           {moduleName === "Monitor" ? (
             <>
               <p className="mb-1 font-medium">Monitor module</p>
               <p>Passively discovers active hosts by </p>
               <p>sniffing ARP packets on the network.</p>
             </>
-          ) : (
+          ) : moduleName === "Probe" ? (
             <>
               <p className="mb-1 font-medium">Probe module</p>
               <p>Actively probes the network by periodically</p>
@@ -82,9 +82,15 @@ export default function ModuleLauncherButton({
                 </p>
               ) : (
                 <p className="mt-1 text-muted-foreground">
-                  Monitor mode must be running to sniff hosts.
+                  Monitor module must be running to sniff hosts.
                 </p>
               )}
+            </>
+          ) : (
+            <>
+              <p className="mb-1 font-medium">ARP Spoof module</p>
+              <p>Performs a MITM attack that intercepts traffic</p>
+              <p>of selected hosts using spoofed ARP packets.</p>
             </>
           )}
         </TooltipContent>

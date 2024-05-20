@@ -8,7 +8,7 @@ export type Module = {
   stop: () => Promise<void>;
 };
 
-export default function useModule(module: "monitor" | "probe") {
+export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
   const [isRunning, setIsRunning] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
@@ -92,6 +92,9 @@ export default function useModule(module: "monitor" | "probe") {
   };
 
   const capitalizeModule = (module: string) => {
+    if (module === "arp-spoof") {
+      return "ARP Spoof";
+    }
     return module.charAt(0).toUpperCase() + module.slice(1);
   };
 
