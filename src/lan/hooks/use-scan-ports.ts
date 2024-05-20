@@ -12,7 +12,7 @@ export default function useScanPorts() {
       setIsPending(true);
       try {
         const response = await fetch(
-          `http://localhost:8000/ports?scan_type=${scanType}`,
+          `http://localhost:8000/ports?type=${scanType}`,
           {
             method: "PATCH",
             headers: {
