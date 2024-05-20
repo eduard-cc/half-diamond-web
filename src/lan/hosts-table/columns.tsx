@@ -49,7 +49,7 @@ export const columns = (
       return (
         <>
           <CopyToClipboardButton text={row.original.ip} />
-          {row.original.name != "None" && (
+          {row.original.name && (
             <Badge
               variant={
                 row.original.name === "Gateway" ? "secondary" : "outline"

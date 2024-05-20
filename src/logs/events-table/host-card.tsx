@@ -19,9 +19,7 @@ export function HostCard({ host, children }: HostCardProps) {
     <HoverCard openDelay={300}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
       <HoverCardContent className="w-80">
-        {host.name && host.name != "None" && (
-          <p className="mb-4 font-medium">{host.name}</p>
-        )}
+        {host.name && <p className="mb-4 font-medium">{host.name}</p>}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <div className="text-muted-foreground">IP</div>

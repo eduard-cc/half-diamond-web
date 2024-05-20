@@ -123,7 +123,7 @@ export const columns: ColumnDef<Event>[] = [
               {row.original.data.ip}
             </span>
           </HostCard>
-          {row.original.data.name != "None" && (
+          {row.original.data.name && (
             <>
               {" "}
               <Badge
