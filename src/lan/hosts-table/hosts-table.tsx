@@ -19,7 +19,6 @@ import { useEffect, useState } from "react";
 import { Host } from "@/lan/types";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
-import { CircleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { Module } from "@/lan/hooks/use-module";
 
@@ -109,14 +108,9 @@ export function HostsTable<TData extends Host, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center font-semibold"
+                  className="h-24 text-center font-medium text-destructive"
                 >
-                  <div className="flex items-center justify-center text-destructive">
-                    <p>
-                      <CircleAlert className="mr-1 h-4 w-4" />
-                    </p>
-                    <span>Failed to establish connection to API.</span>
-                  </div>
+                  <span>Failed to establish connection to API.</span>
                 </TableCell>
               </TableRow>
             ) : isPending ? (

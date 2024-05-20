@@ -77,7 +77,7 @@ export default function ModuleLauncherButton({
               <p>Actively probes the network by periodically</p>
               <p>sending ARP requests to the entire subnet.</p>
               {module.isRunning && !monitorIsRunning ? (
-                <p className="mt-1 text-destructive">
+                <p className="mt-1 font-medium text-destructive">
                   Start the Monitor module to begin discovering hosts.
                 </p>
               ) : (

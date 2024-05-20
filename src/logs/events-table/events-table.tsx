@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMemo, useState } from "react";
-import { CircleAlert, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Event, EventType } from "@/lan/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -189,14 +189,9 @@ export function EventsTable<TData extends Event, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center font-semibold"
+                    className="h-24 text-center font-medium text-destructive"
                   >
-                    <div className="flex items-center justify-center text-destructive">
-                      <p>
-                        <CircleAlert className="mr-1 h-4 w-4" />
-                      </p>
-                      <span>Failed to establish connection to API.</span>
-                    </div>
+                    <span>Failed to establish connection to API.</span>
                   </TableCell>
                 </TableRow>
               ) : isPending ? (
