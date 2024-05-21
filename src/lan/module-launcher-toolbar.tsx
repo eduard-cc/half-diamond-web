@@ -9,36 +9,24 @@ type ModuleLauncherToolbarProps = {
   monitor: Module;
   probe: Module;
   arpSpoof: Module;
+  targetIps: string[];
 };
-
-function processHosts(hosts: Host[]) {
-  let ips: string[] = [];
-  let gatewayIp: string = "";
-  let hostIp: string = "";
-
-  hosts.forEach((host) => {
-    if (host.name === "Gateway") {
-      gatewayIp = host.ip;
-    } else if (host.name) {
-      hostIp = host.ip;
-    } else {
-      ips.push(host.ip);
-    }
-  });
-
-  return { ips, gatewayIp, hostIp };
-}
 
 export default function ModuleLauncherToolbar({
   monitor,
   probe,
   arpSpoof,
+  targetIps,
 }: ModuleLauncherToolbarProps) {
   const { hosts } = useHosts();
   const { ips, gatewayIp, hostIp } = useMemo(
     () => processHosts(hosts),
     [hosts],
   );
+
+  const validTargetIps = useMemo(() => {
+    return targetIps.filter((ip) => ips.includes(ip));
+  }, [targetIps, ips]);
 
   const handleModuleClick = useCallback(async (module: Module) => {
     module.isRunning ? await module.stop() : await module.start();
@@ -66,7 +54,26 @@ export default function ModuleLauncherToolbar({
         gatewayIp={gatewayIp}
         hostIp={hostIp}
         handleClick={handleArpSpoofClick}
+        targetIps={validTargetIps}
       />
     </>
   );
+}
+
+function processHosts(hosts: Host[]) {
+  let ips: string[] = [];
+  let gatewayIp: string = "";
+  let hostIp: string = "";
+
+  hosts.forEach((host) => {
+    if (host.name === "Gateway") {
+      gatewayIp = host.ip;
+    } else if (host.name) {
+      hostIp = host.ip;
+    } else {
+      ips.push(host.ip);
+    }
+  });
+
+  return { ips, gatewayIp, hostIp };
 }

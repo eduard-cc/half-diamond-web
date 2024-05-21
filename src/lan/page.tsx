@@ -46,6 +46,7 @@ export default function HostsPage() {
           monitor={monitor}
           probe={probe}
           arpSpoof={arpSpoof}
+          targetIps={selectedIps}
         />
         <TaskLauncherToolbar
           targetIps={selectedIps}

@@ -9,12 +9,14 @@ import {
 import { LoaderCircle, Play, Square } from "lucide-react";
 import { Module } from "./hooks/use-module";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 type ModuleLauncherButtonProps = {
   module: Module;
   onClick?: () => void;
   moduleName: "Monitor" | "Probe" | "ARP Spoof";
   monitorIsRunning?: boolean;
+  targetIps?: string[];
 };
 
 export default function ModuleLauncherButton({
@@ -22,6 +24,7 @@ export default function ModuleLauncherButton({
   onClick,
   moduleName,
   monitorIsRunning,
+  targetIps = [],
 }: ModuleLauncherButtonProps) {
   return (
     <TooltipProvider>
@@ -60,6 +63,40 @@ export default function ModuleLauncherButton({
                 <Play className="h-4 w-4" />
                 <Separator orientation="vertical" className="mx-2 h-4" />
                 <p>Start {moduleName}</p>
+              </>
+            )}
+            {moduleName === "ARP Spoof" && targetIps.length > 0 && (
+              <>
+                <Separator orientation="vertical" className="mx-2 h-4" />
+                {targetIps.map((targetIp) => (
+                  <Badge
+                    key={targetIp}
+                    className="rounded-sm px-1 font-normal lg:hidden"
+                    variant="secondary"
+                  >
+                    {targetIps}
+                  </Badge>
+                ))}
+                <div className="hidden space-x-1 lg:flex">
+                  {targetIps.length > 1 ? (
+                    <Badge
+                      variant="secondary"
+                      className="rounded-sm px-1 font-normal"
+                    >
+                      {targetIps.length} selected
+                    </Badge>
+                  ) : (
+                    targetIps.map((targetIp) => (
+                      <Badge
+                        variant="secondary"
+                        key={targetIp}
+                        className="rounded-sm px-1 font-normal"
+                      >
+                        {targetIp}
+                      </Badge>
+                    ))
+                  )}
+                </div>
               </>
             )}
           </Button>

@@ -29,6 +29,7 @@ type MultiSelectDropdownProps = {
   triggerTitle?: string;
   searchTitle?: string;
   options: string[];
+  preselectedOptions?: string[];
   limit?: number;
 };
 
@@ -37,9 +38,11 @@ export function MultiSelectDropdown({
   options,
   searchTitle,
   limit,
+  preselectedOptions = [],
 }: MultiSelectDropdownProps) {
-  const [selectedValues, setSelectedValues] = useState(new Set<string>());
-
+  const [selectedValues, setSelectedValues] = useState(
+    new Set(preselectedOptions),
+  );
   return (
     <>
       <Popover>
@@ -112,7 +115,7 @@ export function MultiSelectDropdown({
                     }}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    Deselect all
                   </CommandItem>
                 </CommandGroup>
               </CommandList>

@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -20,6 +21,7 @@ type ArpSpoofDialogProps = {
   gatewayIp: string;
   hostIp: string;
   handleClick: () => void;
+  targetIps: string[];
 };
 
 export function ArpSpoofDialog({
@@ -28,18 +30,23 @@ export function ArpSpoofDialog({
   gatewayIp,
   hostIp,
   handleClick,
+  targetIps,
 }: ArpSpoofDialogProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <ModuleLauncherButton module={arpSpoof} moduleName="ARP Spoof" />
+        <ModuleLauncherButton
+          module={arpSpoof}
+          moduleName="ARP Spoof"
+          targetIps={targetIps}
+        />
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-[31rem]">
         <DialogHeader>
           <DialogTitle>ARP Spoof</DialogTitle>
           <DialogDescription>
-            This module performs a MITM attack that intercepts traffic of
-            selected hosts using spoofed ARP packets.
+            This module performs a MITM attack that intercepts network traffic
+            of selected hosts using spoofed ARP packets.
           </DialogDescription>
         </DialogHeader>
         <>
@@ -47,6 +54,7 @@ export function ArpSpoofDialog({
             <Label className="mb-2">Target hosts</Label>
             <MultiSelectDropdown
               options={ips}
+              preselectedOptions={targetIps}
               triggerTitle="Select target hosts"
               searchTitle="Search by IP"
               limit={5}
@@ -72,8 +80,13 @@ export function ArpSpoofDialog({
           </div>
         </>
         <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="ghost" type="button">
+              Cancel
+            </Button>
+          </DialogClose>
           <Button type="submit" onClick={handleClick}>
-            Start ARP spoof
+            Start ARP spoofing
           </Button>
         </DialogFooter>
       </DialogContent>
