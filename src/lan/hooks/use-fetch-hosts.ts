@@ -9,7 +9,7 @@ export default function useFetchHosts(setHosts: (hosts: Host[]) => void) {
     const fetchHosts = async () => {
       setIsPending(true);
       try {
-        const response = await fetch("http://localhost:8000/monitor/hosts");
+        const response = await fetch("http://localhost:8000/hosts");
         const hosts = await response.json();
         setHosts(hosts);
       } catch (error) {
