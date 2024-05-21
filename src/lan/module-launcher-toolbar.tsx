@@ -1,17 +1,9 @@
 import ModuleLauncherButton from "./module-launcher-button";
 import type { Module } from "./hooks/use-module";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { MultiSelectDropdown } from "./multi-select-dropdown";
 import { useHosts } from "@/providers/hosts-provider";
+import { Host } from "./types";
+import { useCallback, useMemo } from "react";
+import { ArpSpoofDialog } from "./arp-spoof-dialog";
 
 type ModuleLauncherToolbarProps = {
   monitor: Module;
@@ -19,56 +11,62 @@ type ModuleLauncherToolbarProps = {
   arpSpoof: Module;
 };
 
+function processHosts(hosts: Host[]) {
+  let ips: string[] = [];
+  let gatewayIp: string = "";
+  let hostIp: string = "";
+
+  hosts.forEach((host) => {
+    if (host.name === "Gateway") {
+      gatewayIp = host.ip;
+    } else if (host.name) {
+      hostIp = host.ip;
+    } else {
+      ips.push(host.ip);
+    }
+  });
+
+  return { ips, gatewayIp, hostIp };
+}
+
 export default function ModuleLauncherToolbar({
   monitor,
   probe,
   arpSpoof,
 }: ModuleLauncherToolbarProps) {
-  const { hosts: hostObjects } = useHosts();
-  const hosts = hostObjects.map((host) => host.ip);
-  const handleModuleClick = async (module: Module) => {
+  const { hosts } = useHosts();
+  const { ips, gatewayIp, hostIp } = useMemo(
+    () => processHosts(hosts),
+    [hosts],
+  );
+
+  const handleModuleClick = useCallback(async (module: Module) => {
     module.isRunning ? await module.stop() : await module.start();
-  };
+  }, []);
+  const handleMonitorClick = () => handleModuleClick(monitor);
+  const handleProbeClick = () => handleModuleClick(probe);
+  const handleArpSpoofClick = () => handleModuleClick(arpSpoof);
 
   return (
     <>
       <ModuleLauncherButton
         module={monitor}
-        onClick={() => handleModuleClick(monitor)}
+        onClick={handleMonitorClick}
         moduleName="Monitor"
       />
       <ModuleLauncherButton
         module={probe}
-        onClick={() => handleModuleClick(probe)}
+        onClick={handleProbeClick}
         moduleName="Probe"
         monitorIsRunning={monitor.isRunning}
       />
-      <Dialog>
-        <DialogTrigger asChild>
-          <ModuleLauncherButton module={arpSpoof} moduleName="ARP Spoof" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>ARP Spoof</DialogTitle>
-            <DialogDescription>
-              This module performs a MITM attack that intercepts traffic of
-              selected hosts using spoofed ARP packets.
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <MultiSelectDropdown
-              options={hosts}
-              triggerTitle="Select target hosts"
-              searchTitle="Search by IP"
-            />
-          </div>
-          <DialogFooter>
-            <Button type="submit" onClick={() => handleModuleClick(arpSpoof)}>
-              Start ARP spoof
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ArpSpoofDialog
+        arpSpoof={arpSpoof}
+        ips={ips}
+        gatewayIp={gatewayIp}
+        hostIp={hostIp}
+        handleClick={handleArpSpoofClick}
+      />
     </>
   );
 }
