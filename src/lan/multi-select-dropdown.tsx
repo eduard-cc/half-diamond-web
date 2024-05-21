@@ -17,57 +17,49 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
 
 type MultiSelectDropdownProps = {
   triggerTitle?: string;
   searchTitle?: string;
   options: string[];
+  limit?: number;
 };
 
 export function MultiSelectDropdown({
   triggerTitle,
   options,
   searchTitle,
+  limit,
 }: MultiSelectDropdownProps) {
   const [selectedValues, setSelectedValues] = useState(new Set<string>());
 
   return (
     <>
-      {selectedValues?.size > 0 && (
-        <>
-          <Badge variant="secondary" className="mb-4 text-sm lg:hidden">
-            {selectedValues.size}
-          </Badge>
-          <div className="mb-4 hidden gap-1 lg:flex lg:flex-wrap">
-            {options
-              .filter((option) => selectedValues.has(option))
-              .map((option) => (
-                <Badge
-                  variant="secondary"
-                  key={option}
-                  className="p-0 pl-2 text-sm"
-                >
-                  {option}
-                  <div
-                    className="flex h-full items-center px-2 py-1 text-secondary-foreground/50 hover:cursor-pointer hover:text-destructive"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      selectedValues.delete(option);
-                      setSelectedValues(new Set(selectedValues));
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </div>
-                </Badge>
-              ))}
-          </div>
-        </>
-      )}
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8 border-dashed">
+          <Button variant="outline" size="sm" className="w-fit">
             {triggerTitle}
             <ChevronDown className="ml-2 h-4 w-4" />
+            {selectedValues.size > 0 && (
+              <>
+                {" "}
+                <Separator orientation="vertical" className="mx-2 h-4" />
+                <p
+                  className={cn("text-xs text-muted-foreground", {
+                    "text-foreground": selectedValues.size >= 5,
+                  })}
+                >
+                  {selectedValues.size}/5 selected
+                </p>
+              </>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0" align="start">
@@ -78,13 +70,17 @@ export function MultiSelectDropdown({
               <CommandGroup>
                 {options.map((option) => {
                   const isSelected = selectedValues.has(option);
+                  const isDisabled = Boolean(
+                    limit && !isSelected && selectedValues.size >= limit,
+                  );
                   return (
                     <CommandItem
+                      disabled={isDisabled}
                       key={option}
                       onSelect={() => {
                         if (isSelected) {
                           selectedValues.delete(option);
-                        } else {
+                        } else if (limit && selectedValues.size < limit) {
                           selectedValues.add(option);
                         }
                         setSelectedValues(new Set(selectedValues));
@@ -124,6 +120,42 @@ export function MultiSelectDropdown({
           </Command>
         </PopoverContent>
       </Popover>
+      {selectedValues?.size > 0 && (
+        <div className="mt-2">
+          <div className="flex flex-wrap gap-2">
+            {options
+              .filter((option) => selectedValues.has(option))
+              .map((option) => (
+                <Badge
+                  variant="secondary"
+                  key={option}
+                  className="p-0 pl-2 text-sm"
+                >
+                  {option}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div
+                          className="flex h-full items-center px-2 py-1 text-muted-foreground hover:cursor-pointer hover:text-destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            selectedValues.delete(option);
+                            setSelectedValues(new Set(selectedValues));
+                          }}
+                        >
+                          <X className="h-4 w-4" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="font-normal">Remove target</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Badge>
+              ))}
+          </div>
+        </div>
+      )}
     </>
   );
 }
