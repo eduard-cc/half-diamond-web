@@ -183,6 +183,7 @@ export const columns = (
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
+      const isLocalHost = row.original.name && row.original.name != "Gateway";
       return (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
@@ -208,7 +209,8 @@ export const columns = (
               </Badge>
             </TooltipTrigger>
             <TooltipContent>
-              last seen {getFormattedDate(row.original.last_seen)}
+              last seen{" "}
+              {isLocalHost ? "now" : getFormattedDate(row.original.last_seen)}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

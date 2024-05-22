@@ -15,6 +15,7 @@ type HostCardProps = {
 };
 
 export function HostCard({ host, children }: HostCardProps) {
+  const isLocalHost = host.name && host.name != "Gateway";
   return (
     <HoverCard openDelay={300}>
       <HoverCardTrigger asChild>{children}</HoverCardTrigger>
@@ -39,7 +40,7 @@ export function HostCard({ host, children }: HostCardProps) {
           </div>
         </div>
         <p className="mt-4 text-muted-foreground">
-          last seen {getFormattedDate(host.last_seen)}
+          last seen {isLocalHost ? "now" : getFormattedDate(host.last_seen)}
         </p>
         {host.open_ports && host.open_ports?.length > 0 && (
           <>
