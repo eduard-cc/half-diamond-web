@@ -134,7 +134,7 @@ export default function ModuleLauncherButton({
                   <p className="text-xs font-medium text-muted-foreground">
                     Current target{module.arpSpoofedIps.length > 1 && "s"}
                   </p>
-                  <div className="mt-1 flex flex-wrap gap-1">
+                  <div className="my-1 flex flex-wrap gap-1">
                     {module.arpSpoofedIps.map((ip) => (
                       <Badge
                         variant="destructive"
