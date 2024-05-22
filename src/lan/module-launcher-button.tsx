@@ -101,7 +101,7 @@ export default function ModuleLauncherButton({
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent side="bottom">
+        <TooltipContent side="bottom" className="max-w-80">
           {moduleName === "Monitor" ? (
             <>
               <p className="mb-1 font-medium">Monitor module</p>
@@ -128,6 +128,25 @@ export default function ModuleLauncherButton({
               <p className="mb-1 font-medium">ARP Spoof module</p>
               <p>Performs a MITM attack that intercepts traffic</p>
               <p>of selected hosts using spoofed ARP packets.</p>
+              {module.arpSpoofedIps.length > 0 && (
+                <>
+                  <Separator className="my-2" />
+                  <p className="text-xs font-medium text-muted-foreground">
+                    Current target{module.arpSpoofedIps.length > 1 && "s"}
+                  </p>
+                  <div className="mt-1 flex flex-wrap gap-1">
+                    {module.arpSpoofedIps.map((ip) => (
+                      <Badge
+                        variant="destructive"
+                        className="px-1 py-0"
+                        key={ip}
+                      >
+                        {ip}
+                      </Badge>
+                    ))}
+                  </div>
+                </>
+              )}
             </>
           )}
         </TooltipContent>

@@ -19,6 +19,7 @@ export const columns = (
   osIsPending: boolean,
   portsIsPending: boolean,
   scanType: PortScanType,
+  arpSpoofedIps: string[],
 ): ColumnDef<Host>[] => [
   {
     id: "select",
@@ -46,6 +47,7 @@ export const columns = (
     accessorKey: "ip",
     header: "IP",
     cell: ({ row }) => {
+      const isSpoofed = arpSpoofedIps.includes(row.original.ip);
       return (
         <>
           <CopyToClipboardButton text={row.original.ip} />
@@ -57,6 +59,11 @@ export const columns = (
               className="ml-2"
             >
               {row.original.name}
+            </Badge>
+          )}
+          {isSpoofed && (
+            <Badge variant="destructive" className="ml-2">
+              ARP Spoofed
             </Badge>
           )}
         </>

@@ -6,9 +6,11 @@ export type Module = {
   isPending: boolean;
   start: (selectedIps?: string[]) => Promise<void>;
   stop: () => Promise<void>;
+  arpSpoofedIps: string[];
 };
 
 export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
+  const [arpSpoofedIps, setArpSpoofedIps] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const { toast } = useToast();
@@ -40,6 +42,7 @@ export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
           };
 
           if (module === "arp-spoof" && selectedIps) {
+            setArpSpoofedIps(selectedIps);
             options.headers = { "Content-Type": "application/json" };
             options.body = JSON.stringify(selectedIps);
           }
@@ -79,6 +82,9 @@ export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
       const response = await fetch(`http://localhost:8000/${module}/stop`, {
         method: "POST",
       });
+      if (module === "arp-spoof") {
+        setArpSpoofedIps([]);
+      }
       if (!response.ok) {
         toast({
           variant: "destructive",
@@ -111,5 +117,6 @@ export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
     isPending,
     start,
     stop,
+    arpSpoofedIps,
   };
 }

@@ -30,6 +30,7 @@ export default function HostsPage() {
     osIsPending,
     portsIsPending,
     scanType,
+    arpSpoof.arpSpoofedIps,
   );
 
   return (
