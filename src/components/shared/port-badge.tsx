@@ -12,7 +12,9 @@ export default function PortBadge({ port }: { port: Port }) {
     <TooltipProvider key={port.port}>
       <Tooltip>
         <TooltipTrigger>
-          <Badge variant="secondary">{port.port}</Badge>
+          <Badge variant="secondary" className="px-1 py-0">
+            {port.port}
+          </Badge>
         </TooltipTrigger>
         <TooltipContent>
           <div className="grid">
