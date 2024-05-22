@@ -25,6 +25,8 @@ type EventTypeStyle = {
   [EventType.SCAN_TCP]: string;
   [EventType.SCAN_UDP]: string;
   [EventType.OS_DETECTED]: string;
+  [EventType.ARP_SPOOF_STARTED]: string;
+  [EventType.ARP_SPOOF_STOPPED]: string;
   default: string;
   [key: string]: string;
 };
@@ -46,6 +48,10 @@ export const eventTypeStyle: EventTypeStyle = {
     "bg-violet-200/40 text-violet-950 dark:text-violet-50 dark:bg-violet-600/40 border-violet-900/20 dark:border-violet-50/10",
   [EventType.OS_DETECTED]:
     "bg-fuchsia-200/40 text-fuchsia-950 dark:text-fuchsia-50 dark:bg-fuchsia-600/40 border-fuchsia-900/20 dark:border-fuchsia-50/10",
+  [EventType.ARP_SPOOF_STARTED]:
+    "bg-red-200/40 text-red-950 dark:text-red-50 dark:bg-red-600/40 border-red-900/20 dark:border-red-50/10",
+  [EventType.ARP_SPOOF_STOPPED]:
+    "bg-pink-200/40 text-pink-950 dark:text-pink-50 dark:bg-pink-600/40 border-pink-900/20 dark:border-pink-50/10",
   default:
     "bg-stone-200/40 text-stone-950 dark:text-stone-50 dark:bg-stone-600/40 border-stone-900/20 dark:border-stone-50/10",
 };
@@ -113,32 +119,35 @@ export const columns: ColumnDef<Event>[] = [
     accessorKey: "data",
     header: "Description",
     filterFn: (row: Row<Event>, columnId: string, filterValue: any[]) => {
-      const rowValue = (row.original[columnId as keyof Event] as Host).mac;
-      return filterValue.includes(rowValue);
+      const rowValue = row.original[columnId as keyof Event] as Host[];
+      return rowValue.some((host) => filterValue.includes(host.mac));
     },
     cell: ({ row }) => (
-      <EventDescription eventType={row.original.type} host={row.original.data}>
-        {" "}
-        <span>
-          <HostCard host={row.original.data}>
-            <span className="font-medium text-primary underline-offset-4 hover:cursor-pointer hover:underline">
-              {row.original.data.ip}
-            </span>
-          </HostCard>
-          {row.original.data.name && (
-            <>
-              {" "}
-              <Badge
-                variant={
-                  row.original.data.name === "Gateway" ? "secondary" : "outline"
-                }
-                className="px-1 py-0"
-              >
-                {row.original.data.name}
-              </Badge>
-            </>
-          )}
-        </span>
+      <EventDescription
+        eventType={row.getValue("type")}
+        hosts={row.getValue("data")}
+      >
+        {row.original.data.map((host, index) => (
+          <span key={host.ip}>
+            <HostCard host={host}>
+              <span className="font-medium text-primary underline-offset-4 hover:cursor-pointer hover:underline">
+                {host.ip}
+              </span>
+            </HostCard>
+            {host.name && (
+              <>
+                {" "}
+                <Badge
+                  variant={host.name === "Gateway" ? "secondary" : "outline"}
+                  className="px-1 py-0"
+                >
+                  {host.name}
+                </Badge>
+              </>
+            )}
+            {index < row.original.data.length - 1 && ", "}
+          </span>
+        ))}
       </EventDescription>
     ),
   },

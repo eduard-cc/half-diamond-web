@@ -66,10 +66,12 @@ export function EventsTable<TData extends Event, TValue>({
 
   const hostsOptions = useMemo(() => {
     const uniqueHosts = new Map(
-      data.map((event) => {
-        const key = `${event.data.mac}-${event.data.ip}`;
-        return [key, { mac: event.data.mac, ip: event.data.ip }];
-      }),
+      data.flatMap((event) =>
+        event.data.map((host) => {
+          const key = `${host.mac}-${host.ip}`;
+          return [key, { mac: host.mac, ip: host.ip }];
+        }),
+      ),
     );
 
     return Array.from(uniqueHosts.values())
@@ -85,7 +87,6 @@ export function EventsTable<TData extends Event, TValue>({
             return 1;
           }
         }
-
         return 0;
       })
       .map(({ mac, ip }) => ({
@@ -126,12 +127,16 @@ export function EventsTable<TData extends Event, TValue>({
       ],
     },
     {
-      title: "Scan events",
+      title: "Port scan events",
       group: [EventType.SCAN_SYN, EventType.SCAN_TCP, EventType.SCAN_UDP],
     },
     {
       title: "OS events",
       group: [EventType.OS_DETECTED],
+    },
+    {
+      title: "Module events",
+      group: [EventType.ARP_SPOOF_STARTED, EventType.ARP_SPOOF_STOPPED],
     },
   ];
 

@@ -5,7 +5,7 @@ import type { Host } from "@/types/host";
 type EventDescriptionProps = {
   eventType: EventType;
   children: React.ReactNode;
-  host: Host;
+  hosts: Host[];
 };
 
 type PortScanProps = {
@@ -17,7 +17,7 @@ type PortScanProps = {
 export default function EventDescription({
   eventType,
   children,
-  host,
+  hosts,
 }: EventDescriptionProps) {
   const PortScan: React.FC<PortScanProps> = ({ scanType, host, children }) => (
     <>
@@ -45,21 +45,27 @@ export default function EventDescription({
       ) : eventType === EventType.HOST_DISCONNECTED ? (
         <p>{children} has shown no recent activity.</p>
       ) : eventType === EventType.SCAN_SYN ? (
-        <PortScan scanType="TCP SYN" host={host}>
+        <PortScan scanType="TCP SYN" host={hosts[0]}>
           {children}
         </PortScan>
       ) : eventType === EventType.SCAN_TCP ? (
-        <PortScan scanType="TCP connect" host={host}>
+        <PortScan scanType="TCP connect" host={hosts[0]}>
           {children}
         </PortScan>
       ) : eventType === EventType.SCAN_UDP ? (
-        <PortScan scanType="UDP" host={host}>
+        <PortScan scanType="UDP" host={hosts[0]}>
           {children}
         </PortScan>
       ) : eventType === EventType.OS_DETECTED ? (
         <p>
-          OS detected from {children} as {host.os}.
+          OS detected from {children} as {hosts[0].os}.
         </p>
+      ) : eventType === EventType.ARP_SPOOF_STARTED ? (
+        <span>
+          Started ARP Spoofing target{hosts.length > 1 && "s"} {children}
+        </span>
+      ) : eventType === EventType.ARP_SPOOF_STOPPED ? (
+        <p>Stopped ARP Spoof module. ARP tables have been restored.</p>
       ) : null}
     </div>
   );

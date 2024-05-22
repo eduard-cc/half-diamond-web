@@ -30,34 +30,38 @@ export default function useWebSocket(
       }
 
       if (event.type === EventType.HOST_NEW) {
-        updateHosts((prevData) => [...prevData, event.data]);
+        updateHosts((prevData) => [...prevData, ...event.data]);
       } else {
         updateHosts((prevData) => {
           return prevData.map((host) => {
-            if (host.mac !== event.data.mac) {
+            const matchingHost = event.data.find(
+              (h: Host) => h.mac === host.mac,
+            );
+
+            if (!matchingHost) {
               return host;
             }
 
             switch (event.type) {
               case EventType.HOST_SEEN:
                 return mergeProps(host, {
-                  last_seen: event.data.last_seen,
+                  last_seen: matchingHost.last_seen,
                 });
               case EventType.HOST_CONNECTED:
                 return mergeProps(host, {
-                  status: event.data.status,
-                  last_seen: event.data.last_seen,
+                  status: matchingHost.status,
+                  last_seen: matchingHost.last_seen,
                 });
               case EventType.HOST_DISCONNECTED:
-                return mergeProps(host, { status: event.data.status });
+                return mergeProps(host, { status: matchingHost.status });
               case EventType.SCAN_SYN:
               case EventType.SCAN_TCP:
               case EventType.SCAN_UDP:
                 return mergeProps(host, {
-                  open_ports: event.data.open_ports,
+                  open_ports: matchingHost.open_ports,
                 });
               case EventType.OS_DETECTED:
-                return mergeProps(host, { os: event.data.os });
+                return mergeProps(host, { os: matchingHost.os });
               default:
                 return host;
             }
