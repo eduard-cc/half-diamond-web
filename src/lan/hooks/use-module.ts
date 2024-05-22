@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export type Module = {
   isRunning: boolean;
   isPending: boolean;
-  start: () => Promise<void>;
+  start: (selectedIps?: string[]) => Promise<void>;
   stop: () => Promise<void>;
 };
 
@@ -30,17 +30,25 @@ export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
     fetchStatus();
   }, []);
 
-  const start = (): Promise<void> => {
+  const start = (selectedIps?: string[]): Promise<void> => {
     setIsPending(true);
     return new Promise<void>((resolve, reject) => {
       setTimeout(async () => {
         try {
+          const options: RequestInit = {
+            method: "POST",
+          };
+
+          if (module === "arp-spoof" && selectedIps) {
+            options.headers = { "Content-Type": "application/json" };
+            options.body = JSON.stringify(selectedIps);
+          }
+
           const response = await fetch(
             `http://localhost:8000/${module}/start`,
-            {
-              method: "POST",
-            },
+            options,
           );
+
           if (!response.ok) {
             toast({
               variant: "destructive",
