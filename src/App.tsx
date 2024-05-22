@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/shared/navbar";
 import { Toaster } from "@/components/ui/toaster";
-import HostsPage from "@/lan/page";
+import HostsPage from "@/routes/lan/page";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { HostsProvider } from "@/providers/hosts-provider";
 import { EventsProvider } from "@/providers/events-provider";
-import EventsPage from "@/logs/page";
+import EventsPage from "@/routes/events/page";
 
 export default function App() {
   return (

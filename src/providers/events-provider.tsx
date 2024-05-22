@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
-import type { Event } from "@/lan/types";
+import type { Event } from "@/types/event";
 
 type EventsProviderState = {
   events: Event[];

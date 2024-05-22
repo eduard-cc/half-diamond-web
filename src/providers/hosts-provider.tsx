@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useMemo } from "react";
-import type { Host } from "@/lan/types";
+import type { Host } from "@/types/host";
 
 type HostsProviderState = {
   hosts: Host[];
