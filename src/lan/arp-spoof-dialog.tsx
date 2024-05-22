@@ -14,13 +14,14 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Module } from "./hooks/use-module";
 import ModuleLauncherButton from "./module-launcher-button";
+import { useEffect, useState } from "react";
 
 type ArpSpoofDialogProps = {
   arpSpoof: Module;
   ips: string[];
   gatewayIp: string;
   hostIp: string;
-  handleClick: () => void;
+  handleClick: (selectedIps: Set<string>) => void;
   targetIps: string[];
 };
 
@@ -32,6 +33,17 @@ export function ArpSpoofDialog({
   handleClick,
   targetIps,
 }: ArpSpoofDialogProps) {
+  const [selectedIps, setSelectedIps] = useState(new Set(targetIps));
+
+  useEffect(() => {
+    console.log("test"); // issue here
+    setSelectedIps(new Set(targetIps));
+  }, [targetIps]);
+
+  const handleClickWithSelectedIps = () => {
+    handleClick(selectedIps);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -54,9 +66,10 @@ export function ArpSpoofDialog({
             <Label className="mb-2">Target hosts</Label>
             <MultiSelectDropdown
               options={ips}
-              preselectedOptions={targetIps}
               triggerTitle="Select target hosts"
               searchTitle="Search by IP"
+              selectedValues={new Set(selectedIps)}
+              setSelectedValues={setSelectedIps}
               limit={5}
             />
           </div>
@@ -85,7 +98,7 @@ export function ArpSpoofDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button type="submit" onClick={handleClick}>
+          <Button type="submit" onClick={handleClickWithSelectedIps}>
             Start ARP spoofing
           </Button>
         </DialogFooter>

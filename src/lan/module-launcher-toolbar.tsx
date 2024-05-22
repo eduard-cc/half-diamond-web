@@ -28,12 +28,21 @@ export default function ModuleLauncherToolbar({
     return targetIps.filter((ip) => ips.includes(ip));
   }, [targetIps, ips]);
 
-  const handleModuleClick = useCallback(async (module: Module) => {
-    module.isRunning ? await module.stop() : await module.start();
-  }, []);
-  const handleMonitorClick = () => handleModuleClick(monitor);
-  const handleProbeClick = () => handleModuleClick(probe);
-  const handleArpSpoofClick = () => handleModuleClick(arpSpoof);
+  const handleClick = useCallback(
+    async (module: Module, selectedIps?: Set<string>) => {
+      if (module.isRunning) {
+        await module.stop();
+      } else {
+        await module.start(selectedIps ? Array.from(selectedIps) : []);
+      }
+    },
+    [],
+  );
+
+  const handleMonitorClick = () => handleClick(monitor);
+  const handleProbeClick = () => handleClick(probe);
+  const handleArpSpoofClick = (selectedIps: Set<string>) =>
+    handleClick(arpSpoof, new Set(selectedIps));
 
   return (
     <>

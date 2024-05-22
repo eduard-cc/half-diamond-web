@@ -16,7 +16,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -29,7 +28,8 @@ type MultiSelectDropdownProps = {
   triggerTitle?: string;
   searchTitle?: string;
   options: string[];
-  preselectedOptions?: string[];
+  selectedValues: Set<string>;
+  setSelectedValues: (values: Set<string>) => void;
   limit?: number;
 };
 
@@ -38,11 +38,9 @@ export function MultiSelectDropdown({
   options,
   searchTitle,
   limit,
-  preselectedOptions = [],
+  selectedValues,
+  setSelectedValues,
 }: MultiSelectDropdownProps) {
-  const [selectedValues, setSelectedValues] = useState(
-    new Set(preselectedOptions),
-  );
   return (
     <>
       <Popover>
