@@ -7,4 +7,6 @@ export enum EventType {
   SCAN_TCP = "scan.tcp",
   SCAN_UDP = "scan.udp",
   OS_DETECTED = "os.detected",
+  ARP_SPOOF_STARTED = "arp.spoof.started",
+  ARP_SPOOF_STOPPED = "arp.spoof.stopped",
 }
