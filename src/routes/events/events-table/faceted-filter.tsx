@@ -1,4 +1,4 @@
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { Column } from "@tanstack/react-table";
 import { cn } from "@/utils/cn";
 import { Badge } from "@/components/ui/badge";
@@ -167,7 +167,7 @@ export function FacetedFilter<TData, TValue>({
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           {title}
-          <ChevronsUpDown className="ml-2 h-4 w-4 text-muted-foreground" />
+          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
@@ -215,7 +215,7 @@ export function FacetedFilter<TData, TValue>({
                   onValueChange={setSearch}
                 />
               )}
-              <ScrollArea className="h-80" type="auto">
+              <ScrollArea className="h-96" type="auto">
                 <CommandList className="max-h-full w-full pr-2">
                   {renderCommandList()}
                 </CommandList>

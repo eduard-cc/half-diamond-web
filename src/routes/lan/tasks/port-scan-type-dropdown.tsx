@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { PortScanType } from "@/types/port-scan-type";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type PortScanTypeDropdownProps = {
   disabled: boolean;
@@ -38,7 +38,7 @@ export default function PortScanTypeDropdown({
           className="z-10 h-8 rounded-r-none border-r-0"
         >
           {scanTypeDetails[scanType]}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

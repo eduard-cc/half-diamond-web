@@ -88,7 +88,7 @@ export function MultiSelectDropdown({
             <div className="flex items-center">
               {" "}
               {triggerTitle}
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </div>
             {selectedValues.size > 0 && (
               <p
