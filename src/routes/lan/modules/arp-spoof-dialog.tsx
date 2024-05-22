@@ -53,7 +53,7 @@ export function ArpSpoofDialog({
           targetIps={targetIps}
         />
       </DialogTrigger>
-      <DialogContent className="max-w-[31rem]">
+      <DialogContent className="max-w-[30rem]">
         <DialogHeader>
           <DialogTitle>ARP Spoof</DialogTitle>
           <DialogDescription>
@@ -83,7 +83,7 @@ export function ArpSpoofDialog({
             </Badge>
           </div>
           <div className="grid">
-            <Label className="mb-2">Host</Label>
+            <Label className="mb-2">Source</Label>
             <Badge
               variant="secondary"
               className="w-fit px-2 py-[0.1rem] text-sm"

@@ -22,7 +22,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
 
 type MultiSelectDropdownProps = {
   triggerTitle?: string;
@@ -43,23 +42,62 @@ export function MultiSelectDropdown({
 }: MultiSelectDropdownProps) {
   return (
     <>
+      {selectedValues?.size > 0 && (
+        <div className="mb-2">
+          <div className="flex flex-wrap gap-2">
+            {options
+              .filter((option) => selectedValues.has(option))
+              .map((option) => (
+                <Badge
+                  variant="secondary"
+                  key={option}
+                  className="p-0 pl-2 text-sm"
+                >
+                  {option}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div
+                          className="flex h-full items-center px-2 py-1 text-muted-foreground hover:cursor-pointer hover:text-destructive"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            selectedValues.delete(option);
+                            setSelectedValues(new Set(selectedValues));
+                          }}
+                        >
+                          <X className="h-4 w-4" />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="font-normal">Remove target</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </Badge>
+              ))}
+          </div>
+        </div>
+      )}
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="w-fit">
-            {triggerTitle}
-            <ChevronDown className="ml-2 h-4 w-4" />
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex w-full items-center justify-between"
+          >
+            <div className="flex items-center">
+              {" "}
+              {triggerTitle}
+              <ChevronDown className="ml-2 h-4 w-4" />
+            </div>
             {selectedValues.size > 0 && (
-              <>
-                {" "}
-                <Separator orientation="vertical" className="mx-2 h-4" />
-                <p
-                  className={cn("text-xs text-muted-foreground", {
-                    "text-foreground": selectedValues.size >= 5,
-                  })}
-                >
-                  {selectedValues.size}/5 selected
-                </p>
-              </>
+              <p
+                className={cn("text-xs text-muted-foreground", {
+                  "text-foreground": selectedValues.size >= 5,
+                })}
+              >
+                {selectedValues.size}/5 selected
+              </p>
             )}
           </Button>
         </PopoverTrigger>
@@ -121,42 +159,6 @@ export function MultiSelectDropdown({
           </Command>
         </PopoverContent>
       </Popover>
-      {selectedValues?.size > 0 && (
-        <div className="mt-2">
-          <div className="flex flex-wrap gap-2">
-            {options
-              .filter((option) => selectedValues.has(option))
-              .map((option) => (
-                <Badge
-                  variant="secondary"
-                  key={option}
-                  className="p-0 pl-2 text-sm"
-                >
-                  {option}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div
-                          className="flex h-full items-center px-2 py-1 text-muted-foreground hover:cursor-pointer hover:text-destructive"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            selectedValues.delete(option);
-                            setSelectedValues(new Set(selectedValues));
-                          }}
-                        >
-                          <X className="h-4 w-4" />
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p className="font-normal">Remove target</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </Badge>
-              ))}
-          </div>
-        </div>
-      )}
     </>
   );
 }
