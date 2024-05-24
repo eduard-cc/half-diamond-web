@@ -26,7 +26,7 @@ export default function ModuleLauncherToolbar({
 
   const validTargetIps = useMemo(() => {
     return targetIps.filter((ip) => ips.includes(ip));
-  }, [targetIps, ips]);
+  }, [targetIps]);
 
   const handleClick = useCallback(
     async (module: Module, selectedIps?: Set<string>) => {
