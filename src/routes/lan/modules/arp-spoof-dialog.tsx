@@ -36,12 +36,17 @@ export function ArpSpoofDialog({
   const [selectedIps, setSelectedIps] = useState(new Set(targetIps));
   const [open, setOpen] = useState(false);
 
-  const handleCanStart = () => !gatewayIp || !hostIp || selectedIps.size === 0;
+  useEffect(() => {
+    if (!open) {
+      setSelectedIps(new Set(targetIps));
+    }
+  }, [open]);
 
   useEffect(() => {
-    console.log("test"); // issue here
     setSelectedIps(new Set(targetIps));
   }, [targetIps]);
+
+  const handleCanStart = () => !gatewayIp || !hostIp || selectedIps.size === 0;
 
   const handleClickWithSelectedIps = () => {
     handleClick(selectedIps);
@@ -88,19 +93,21 @@ export function ArpSpoofDialog({
           <div className="grid">
             <Label className="mb-2">Gateway</Label>
             <Badge
-              variant="secondary"
+              variant={gatewayIp === "" ? "destructive" : "secondary"}
               className="w-fit px-2 py-[0.1rem] text-sm"
             >
               {gatewayIp}
+              {gatewayIp === "" && "Not found"}
             </Badge>
           </div>
           <div className="grid">
             <Label className="mb-2">Source</Label>
             <Badge
-              variant="secondary"
+              variant={hostIp === "" ? "destructive" : "secondary"}
               className="w-fit px-2 py-[0.1rem] text-sm"
             >
               {hostIp}
+              {hostIp === "" && "Not found"}
             </Badge>
           </div>
         </>
