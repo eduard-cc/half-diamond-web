@@ -34,6 +34,9 @@ export function ArpSpoofDialog({
   targetIps,
 }: ArpSpoofDialogProps) {
   const [selectedIps, setSelectedIps] = useState(new Set(targetIps));
+  const [open, setOpen] = useState(false);
+
+  const handleCanStart = () => !gatewayIp || !hostIp || selectedIps.size === 0;
 
   useEffect(() => {
     console.log("test"); // issue here
@@ -42,15 +45,24 @@ export function ArpSpoofDialog({
 
   const handleClickWithSelectedIps = () => {
     handleClick(selectedIps);
+    setOpen(false);
+  };
+
+  const handleStop = (event: React.MouseEvent) => {
+    if (arpSpoof.isRunning) {
+      event.preventDefault();
+      arpSpoof.stop();
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <ModuleLauncherButton
           module={arpSpoof}
           moduleName="ARP Spoof"
           targetIps={targetIps}
+          onClick={handleStop}
         />
       </DialogTrigger>
       <DialogContent className="max-w-[30rem]">
@@ -98,7 +110,11 @@ export function ArpSpoofDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button type="submit" onClick={handleClickWithSelectedIps}>
+          <Button
+            type="submit"
+            onClick={handleClickWithSelectedIps}
+            disabled={handleCanStart()}
+          >
             Start ARP spoofing
           </Button>
         </DialogFooter>
