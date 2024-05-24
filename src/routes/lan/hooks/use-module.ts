@@ -21,6 +21,9 @@ export default function useModule(module: "monitor" | "probe" | "arp-spoof") {
         const response = await fetch(`http://localhost:8000/${module}/status`);
         const status = await response.json();
         setIsRunning(status.running);
+        if (module === "arp-spoof" && status.running) {
+          setArpSpoofedIps(status.targets);
+        }
       } catch (error) {
         toast({
           variant: "destructive",
