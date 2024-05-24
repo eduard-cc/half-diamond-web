@@ -36,7 +36,12 @@ export function DataTableColumnToggle<TData>({
       >
         {table
           .getAllColumns()
-          .filter((column) => column.getCanHide() && column.id !== "select")
+          .filter(
+            (column) =>
+              column.getCanHide() &&
+              column.id !== "select" &&
+              column.id !== "ip",
+          )
           .map((column) => {
             return (
               <DropdownMenuCheckboxItem
