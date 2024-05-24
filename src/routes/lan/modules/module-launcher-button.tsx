@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 
 type ModuleLauncherButtonProps = {
   module: Module;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent) => void;
   moduleName: "Monitor" | "Probe" | "ARP Spoof";
   monitorIsRunning?: boolean;
   targetIps?: string[];
@@ -65,40 +65,42 @@ export default function ModuleLauncherButton({
                 <p>Start {moduleName}</p>
               </>
             )}
-            {moduleName === "ARP Spoof" && targetIps.length > 0 && (
-              <>
-                <Separator orientation="vertical" className="mx-2 h-4" />
-                {targetIps.map((targetIp) => (
-                  <Badge
-                    key={targetIp}
-                    className="rounded-sm px-1 font-normal lg:hidden"
-                    variant="secondary"
-                  >
-                    {targetIps}
-                  </Badge>
-                ))}
-                <div className="hidden space-x-1 lg:flex">
-                  {targetIps.length > 1 ? (
+            {moduleName === "ARP Spoof" &&
+              targetIps.length > 0 &&
+              !module.isRunning && (
+                <>
+                  <Separator orientation="vertical" className="mx-2 h-4" />
+                  {targetIps.map((targetIp) => (
                     <Badge
+                      key={targetIp}
+                      className="rounded-sm px-1 font-normal lg:hidden"
                       variant="secondary"
-                      className="rounded-sm px-1 font-normal"
                     >
-                      {targetIps.length} selected
+                      {targetIps}
                     </Badge>
-                  ) : (
-                    targetIps.map((targetIp) => (
+                  ))}
+                  <div className="hidden space-x-1 lg:flex">
+                    {targetIps.length > 1 ? (
                       <Badge
                         variant="secondary"
-                        key={targetIp}
                         className="rounded-sm px-1 font-normal"
                       >
-                        {targetIp}
+                        {targetIps.length} selected
                       </Badge>
-                    ))
-                  )}
-                </div>
-              </>
-            )}
+                    ) : (
+                      targetIps.map((targetIp) => (
+                        <Badge
+                          variant="secondary"
+                          key={targetIp}
+                          className="rounded-sm px-1 font-normal"
+                        >
+                          {targetIp}
+                        </Badge>
+                      ))
+                    )}
+                  </div>
+                </>
+              )}
           </Button>
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-80">
