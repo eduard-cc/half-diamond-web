@@ -6,7 +6,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
 } from "@/components/ui/dropdown-menu";
-import { ListFilter } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 type DataTableColumnToggleProps<TData> = {
   table: Table<TData>;
@@ -27,9 +27,9 @@ export function DataTableColumnToggle<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-8" size="sm">
-          <ListFilter className="h-4 w-4" />
-          <span className="ml-2 hidden sm:inline lg:hidden">Columns</span>
-          <span className="ml-2 hidden lg:inline">Toggle columns</span>
+          <span className="ml-2 sm:hidden">Columns</span>
+          <span className="ml-2 hidden sm:inline">Toggle columns</span>
+          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

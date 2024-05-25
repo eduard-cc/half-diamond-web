@@ -56,7 +56,7 @@ export default function ModuleLauncherToolbar({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="flex xl:hidden">
+        <DropdownMenuTrigger asChild className="flex 2xl:hidden">
           <Button variant="outline" size="sm" className="h-8">
             Modules
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -92,7 +92,7 @@ export default function ModuleLauncherToolbar({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <div className="hidden gap-2 xl:flex">
+      <div className="hidden gap-2 2xl:flex">
         <ModuleLauncherButton
           module={monitor}
           onClick={handleMonitorClick}

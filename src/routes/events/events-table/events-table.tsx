@@ -152,7 +152,7 @@ export function EventsTable<TData extends Event, TValue>({
           />
           <FacetedFilter
             column={table.getColumn("data")}
-            title="Host IP"
+            title="IP"
             options={hostsOptions}
           />
         </div>

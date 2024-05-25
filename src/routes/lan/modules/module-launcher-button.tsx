@@ -33,7 +33,7 @@ export default function ModuleLauncherButton({
           <Button
             onClick={onClick}
             size="sm"
-            className="flex w-full items-center justify-start border-transparent xl:h-8 xl:border-input"
+            className="flex w-full items-center justify-start border-transparent 2xl:h-8 2xl:border-input"
             variant={module.isRunning ? "destructive" : "outline"}
             disabled={module.isPending}
           >
@@ -71,14 +71,14 @@ export default function ModuleLauncherButton({
                 <>
                   <Separator
                     orientation="vertical"
-                    className="mx-2 hidden h-4 xl:flex"
+                    className="mx-2 hidden h-4 2xl:flex"
                   />
-                  <div className="flex space-x-1 xl:hidden">
+                  <div className="flex space-x-1 2xl:hidden">
                     <Badge variant="secondary" className="ml-2 rounded-sm px-1">
                       {targetIps.length}
                     </Badge>
                   </div>
-                  <div className="hidden space-x-1 xl:flex">
+                  <div className="hidden space-x-1 2xl:flex">
                     {targetIps.length > 1 ? (
                       <Badge
                         variant="secondary"

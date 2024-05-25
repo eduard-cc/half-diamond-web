@@ -21,7 +21,7 @@ export default function EventDescription({
 }: EventDescriptionProps) {
   const PortScan: React.FC<PortScanProps> = ({ scanType, host, children }) => (
     <>
-      <span>Ports </span>
+      <span>Port{host.open_ports && host.open_ports?.length > 1 && "s"} </span>
       <span className="space-x-1">
         {host.open_ports?.map((port) => (
           <PortBadge key={port.port} port={port} />

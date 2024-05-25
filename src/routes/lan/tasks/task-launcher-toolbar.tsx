@@ -33,7 +33,7 @@ export default function TaskLauncherToolbar({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild className="flex md:hidden">
+        <DropdownMenuTrigger asChild className="flex lg:hidden">
           <Button variant="outline" size="sm" className="h-8">
             Scanners
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -73,7 +73,7 @@ export default function TaskLauncherToolbar({
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <div className="hidden gap-2 md:flex">
+      <div className="hidden gap-2 lg:flex">
         <TaskLauncherButton
           title="Detect OS"
           onLaunch={(targetIps) => {
