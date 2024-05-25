@@ -8,6 +8,8 @@ import {
   getPaginationRowModel,
   SortingState,
   getSortedRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 import {
   Table,
@@ -17,12 +19,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Host } from "@/types/host";
 import { DataTableColumnToggle } from "./data-table-column-toggle";
 import DataTablePaginationButtons from "./data-table-pagination-buttons";
 import { Button } from "@/components/ui/button";
 import type { Module } from "@/routes/lan/hooks/use-module";
+import { FacetedFilter } from "@/routes/events/events-table/faceted-filter";
 
 type HostsTableProps<TData extends Host, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -51,6 +54,7 @@ export function HostsTable<TData extends Host, TValue>({
       return savedVisibility ? JSON.parse(savedVisibility) : {};
     },
   );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -61,10 +65,13 @@ export function HostsTable<TData extends Host, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       rowSelection,
       columnVisibility: columnVisibility,
       sorting,
+      columnFilters,
     },
   });
 
@@ -83,11 +90,33 @@ export function HostsTable<TData extends Host, TValue>({
     );
   }, [columnVisibility]);
 
+  const hostsOptions = useMemo(() => {
+    return data
+      .map((host) => ({
+        label: host.ip,
+        value: host.ip,
+        component: ({ label }: { label: string }) => <span>{label}</span>,
+      }))
+      .sort((a, b) => {
+        const subnetA = Number(a.label.split(".").pop());
+        const subnetB = Number(b.label.split(".").pop());
+        return subnetA - subnetB;
+      });
+  }, [data]);
+
   return (
     <>
       <div className="mb-2 flex justify-between">
         <div className="flex gap-2">{children}</div>
-        <DataTableColumnToggle table={table} />
+        <div className="flex gap-2">
+          <FacetedFilter
+            column={table.getColumn("ip")}
+            title="IP"
+            options={hostsOptions}
+            align="end"
+          />
+          <DataTableColumnToggle table={table} />
+        </div>
       </div>
       <div className="relative w-full overflow-auto rounded-md border">
         <Table>

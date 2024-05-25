@@ -1,4 +1,4 @@
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import type { Port } from "@/types/port";
 import type { Host } from "@/types/host";
 import { PortScanType } from "@/types/port-scan-type";
@@ -53,7 +53,7 @@ export const columns = (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="-m-5"
+          className="-m-4"
         >
           IP
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -94,6 +94,13 @@ export const columns = (
         return isAsc ? 1 : -1;
       }
       return 0;
+    },
+    filterFn: (row: Row<Host>, columnId: string, filterValue: any[]) => {
+      if (columnId === "ip") {
+        const rowValue = row.original[columnId];
+        return filterValue.map(String).includes(String(rowValue).toLowerCase());
+      }
+      return false;
     },
   },
   {
@@ -210,7 +217,7 @@ export const columns = (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="-m-5"
+          className="-m-4"
         >
           Status
           <ArrowUpDown className="ml-2 h-4 w-4" />

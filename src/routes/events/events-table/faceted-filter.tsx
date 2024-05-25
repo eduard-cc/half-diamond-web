@@ -34,6 +34,7 @@ type FacetedFilterProps<TData, TValue> = {
     title: string;
     group: any[];
   }[];
+  align?: "start" | "end";
 };
 
 export function FacetedFilter<TData, TValue>({
@@ -41,34 +42,27 @@ export function FacetedFilter<TData, TValue>({
   title,
   options,
   headers,
+  align,
 }: FacetedFilterProps<TData, TValue>) {
   const [search, setSearch] = useState("");
   const selectedValues = new Set(column?.getFilterValue() as string[]);
-
   const getFacets = (column?: Column<TData, TValue>) => {
     const facets = column?.getFacetedUniqueValues();
-
     if (!facets) {
       return undefined;
     }
 
-    const facetsArray = Array.from<[any, number], { key: any; value: number }>(
-      facets,
-      ([key, value]) => ({ key, value }),
-    );
-
-    if (typeof facetsArray[0]?.key === "object") {
-      const ipCount = facetsArray.reduce<Map<string, number>>((acc, facet) => {
-        const ip = facet.key.ip;
-        if (!acc.has(ip)) {
-          acc.set(ip, 0);
-        }
-        acc.set(ip, acc.get(ip)! + 1);
-        return acc;
-      }, new Map());
-      return ipCount;
+    if (Array.isArray([...facets.keys()][0])) {
+      const facetsByIp = Array.from(facets).reduce(
+        (acc: Map<string, number>, [key]) => {
+          const ip = key[0].ip;
+          acc.set(ip, (acc.get(ip) || 0) + 1);
+          return acc;
+        },
+        new Map(),
+      );
+      return facetsByIp;
     }
-
     return facets;
   };
   const facets = getFacets(column);
@@ -127,7 +121,7 @@ export function FacetedFilter<TData, TValue>({
           <Check className={cn("h-4 w-4")} />
         </div>
         <LabelComponent label={option.label} />
-        {facets && (
+        {facets && facets.size > 0 && (
           <span className="ml-auto flex h-4 w-4 items-center justify-center pl-4 pr-2 font-mono text-xs font-semibold">
             {(typeof facets.keys().next().value === "string" &&
               facets.get(option.value)) ||
@@ -165,7 +159,8 @@ export function FacetedFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button variant="outline" size="sm" className="h-8">
+          <span className="hidden sm:mr-1 sm:block">Filter by</span>
           {title}
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           {selectedValues?.size > 0 && (
@@ -207,13 +202,13 @@ export function FacetedFilter<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-fit p-0" align="start">
+      <PopoverContent className="w-fit p-0" align={align ? align : "start"}>
         <Command>
           {filteredOptions.length + (headers?.length ?? 0) > 9 ? (
             <>
               {!headers && (
                 <CommandInput
-                  placeholder={`Search by ${title}`}
+                  placeholder="Search..."
                   className="h-10"
                   value={search}
                   onValueChange={setSearch}
@@ -229,7 +224,7 @@ export function FacetedFilter<TData, TValue>({
             <>
               {!headers && (
                 <CommandInput
-                  placeholder={`Search by ${title}`}
+                  placeholder="Search..."
                   className="h-10"
                   value={search}
                   onValueChange={setSearch}
