@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import CopyToClipboardButton from "@/components/shared/copy-to-clipboard-button";
 import { getFormattedDate } from "@/utils/get-formatted-date";
 import PortBadge from "@/components/shared/port-badge";
+import { ArrowUpDown } from "lucide-react";
 
 export const columns = (
   detectOs: (targetIps: string[]) => void,
@@ -47,7 +48,18 @@ export const columns = (
   },
   {
     accessorKey: "ip",
-    header: "IP",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="-m-5"
+        >
+          IP
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const isSpoofed = arpSpoofedIps.includes(row.original.ip);
       return (
@@ -70,6 +82,18 @@ export const columns = (
           )}
         </>
       );
+    },
+    sortingFn: (rowA, rowB, isAsc) => {
+      const lastPartOfIpA = parseInt(rowA.original.ip.split(".").pop() || "0");
+      const lastPartOfIpB = parseInt(rowB.original.ip.split(".").pop() || "0");
+
+      if (lastPartOfIpA < lastPartOfIpB) {
+        return isAsc ? -1 : 1;
+      }
+      if (lastPartOfIpA > lastPartOfIpB) {
+        return isAsc ? 1 : -1;
+      }
+      return 0;
     },
   },
   {
@@ -181,7 +205,18 @@ export const columns = (
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="-m-5"
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const isLocalHost = row.original.name && row.original.name != "Gateway";
       return (
