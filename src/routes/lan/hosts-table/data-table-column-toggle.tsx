@@ -27,12 +27,14 @@ export function DataTableColumnToggle<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-8" size="sm">
-          <ListFilter className="mr-2 h-4 w-4" />
-          Toggle columns
+          <ListFilter className="h-4 w-4" />
+          <span className="ml-2 hidden sm:inline lg:hidden">Columns</span>
+          <span className="ml-2 hidden lg:inline">Toggle columns</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         style={{ width: "var(--radix-dropdown-menu-trigger-width)" }}
+        align="end"
       >
         {table
           .getAllColumns()

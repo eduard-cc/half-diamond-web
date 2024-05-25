@@ -142,25 +142,28 @@ export function EventsTable<TData extends Event, TValue>({
 
   return (
     <>
-      <div className="mb-2 flex gap-2">
-        <FacetedFilter
-          column={table.getColumn("type")}
-          title="Type"
-          options={eventTypeOptions}
-          headers={eventGroups}
-        />
-        <FacetedFilter
-          column={table.getColumn("data")}
-          title="Host IP"
-          options={hostsOptions}
-        />
+      <div className="mb-2 flex justify-between gap-2 lg:justify-normal">
+        <div className="flex gap-2">
+          <FacetedFilter
+            column={table.getColumn("type")}
+            title="Type"
+            options={eventTypeOptions}
+            headers={eventGroups}
+          />
+          <FacetedFilter
+            column={table.getColumn("data")}
+            title="Host IP"
+            options={hostsOptions}
+          />
+        </div>
         {isFiltered && (
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            Clear all filters
+            <span className="hidden lg:flex">Clear all filters</span>
+            <span className="lg:hidden">Reset</span>
             <FilterX className="ml-2 h-4 w-4" />
           </Button>
         )}

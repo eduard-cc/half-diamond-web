@@ -29,7 +29,10 @@ export default function TaskLauncherButton({
       size="sm"
       disabled={targetIps.length === 0 || pending}
       onClick={handleClick}
-      className={cn("h-8", title === "Scan Ports" && "rounded-l-none")}
+      className={cn(
+        "flex w-full items-center justify-between border-transparent md:h-8 md:justify-start md:border-input",
+        title === "Scan Ports" && "rounded-l-none",
+      )}
     >
       {pending ? (
         <>
@@ -41,17 +44,16 @@ export default function TaskLauncherButton({
       )}
       {targetIps.length > 0 && (
         <>
-          <Separator orientation="vertical" className="mx-2 h-4" />
-          {targetIps.map((targetIp) => (
-            <Badge
-              key={targetIp}
-              className="rounded-sm px-1 font-normal lg:hidden"
-              variant="secondary"
-            >
-              {targetIps}
+          <Separator
+            orientation="vertical"
+            className="mx-2 hidden h-4 md:flex"
+          />
+          <div className="flex space-x-1 md:hidden">
+            <Badge variant="secondary" className="ml-2 rounded-sm px-1">
+              {targetIps.length}
             </Badge>
-          ))}
-          <div className="hidden space-x-1 lg:flex">
+          </div>
+          <div className="hidden space-x-1 md:flex">
             {targetIps.length > 1 ? (
               <Badge
                 variant="secondary"

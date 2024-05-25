@@ -70,10 +70,10 @@ export function ArpSpoofDialog({
           onClick={handleStop}
         />
       </DialogTrigger>
-      <DialogContent className="max-w-[30rem]">
+      <DialogContent className="w-11/12 max-w-[30rem] p-5 sm:p-6">
         <DialogHeader>
           <DialogTitle>ARP Spoof</DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="hidden sm:block">
             This module performs a MITM attack that intercepts network traffic
             of selected hosts using spoofed ARP packets.
           </DialogDescription>
@@ -113,7 +113,7 @@ export function ArpSpoofDialog({
         </>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="ghost" type="button">
+            <Button variant="ghost" type="button" className="mt-2 sm:mt-0">
               Cancel
             </Button>
           </DialogClose>

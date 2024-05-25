@@ -33,7 +33,7 @@ export default function ModuleLauncherButton({
           <Button
             onClick={onClick}
             size="sm"
-            className="h-8"
+            className="flex w-full items-center justify-start border-transparent xl:h-8 xl:border-input"
             variant={module.isRunning ? "destructive" : "outline"}
             disabled={module.isPending}
           >
@@ -69,17 +69,16 @@ export default function ModuleLauncherButton({
               targetIps.length > 0 &&
               !module.isRunning && (
                 <>
-                  <Separator orientation="vertical" className="mx-2 h-4" />
-                  {targetIps.map((targetIp) => (
-                    <Badge
-                      key={targetIp}
-                      className="rounded-sm px-1 font-normal lg:hidden"
-                      variant="secondary"
-                    >
-                      {targetIps}
+                  <Separator
+                    orientation="vertical"
+                    className="mx-2 hidden h-4 xl:flex"
+                  />
+                  <div className="flex space-x-1 xl:hidden">
+                    <Badge variant="secondary" className="ml-2 rounded-sm px-1">
+                      {targetIps.length}
                     </Badge>
-                  ))}
-                  <div className="hidden space-x-1 lg:flex">
+                  </div>
+                  <div className="hidden space-x-1 xl:flex">
                     {targetIps.length > 1 ? (
                       <Badge
                         variant="secondary"

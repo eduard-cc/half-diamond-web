@@ -10,7 +10,7 @@ export default function EventsPage() {
     useFetchEvents(setEvents);
 
   return (
-    <div className="container mx-auto py-2">
+    <div className="container mx-auto px-2 py-2">
       <EventsTable
         columns={columns}
         data={events.filter((event) => event.type !== EventType.HOST_SEEN)}

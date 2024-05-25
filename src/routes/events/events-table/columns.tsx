@@ -72,7 +72,14 @@ export const columns: ColumnDef<Event>[] = [
       );
     },
     cell: ({ row }) => {
-      const dateToLocaleString = new Date(row.original.time).toLocaleString();
+      const date = new Date(row.original.time);
+      const dateToLocaleString = `${date.toLocaleDateString()} ${date.toLocaleTimeString(
+        undefined,
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+        },
+      )}`;
       return (
         <TooltipProvider delayDuration={0}>
           <Tooltip>

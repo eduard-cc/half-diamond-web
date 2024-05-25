@@ -23,7 +23,7 @@ export default function Navbar() {
   useWebSocket(setHosts, setEvents, setNewEventsCount);
 
   return (
-    <nav className="container mx-auto flex justify-between pt-6">
+    <nav className="container mx-auto flex justify-between px-2 pt-2 lg:pt-6">
       <div className="flex gap-4">
         <Button
           variant="outline"

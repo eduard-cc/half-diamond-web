@@ -35,24 +35,30 @@ export default function PortScanTypeDropdown({
           variant="outline"
           size="sm"
           disabled={disabled}
-          className="z-10 h-8 rounded-r-none border-r-0"
+          className="z-10 rounded-r-none border-transparent md:h-8 md:border-r-0 md:border-input"
         >
-          {scanTypeDetails[scanType]}
+          <span className="hidden md:block">{scanTypeDetails[scanType]}</span>
+          <span className="md:hidden">Port scan type</span>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>Port scan type</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      <DropdownMenuContent
+        style={{
+          width:
+            "calc(var(--radix-dropdown-menu-trigger-width) + 0.5rem + 1px)",
+        }}
+      >
+        <div className="hidden md:block">
+          <DropdownMenuLabel>Port scan type</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+        </div>
         <DropdownMenuRadioGroup
           value={scanType}
           onValueChange={(value) => setScanType(value as PortScanType)}
         >
           {Object.entries(scanTypeDetails).map(([value, displayName]) => (
             <DropdownMenuRadioItem key={value} value={value as PortScanType}>
-              <div>
-                <p>{displayName}</p>
-              </div>
+              <p>{displayName}</p>
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>

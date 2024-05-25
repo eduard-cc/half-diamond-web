@@ -101,7 +101,11 @@ export function MultiSelectDropdown({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0" align="start">
+        <PopoverContent
+          className="p-0"
+          align="start"
+          style={{ width: "var(--radix-popover-trigger-width)" }}
+        >
           <Command>
             <CommandInput placeholder={searchTitle} />
             <CommandList>

@@ -170,12 +170,16 @@ export function FacetedFilter<TData, TValue>({
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           {selectedValues?.size > 0 && (
             <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Separator
+                orientation="vertical"
+                className="mx-2 hidden h-4 sm:flex"
+              />
               <Badge
                 variant="secondary"
-                className="rounded-sm px-1 font-normal md:hidden"
+                className="ml-2 rounded-sm px-1 font-normal sm:ml-0 md:hidden"
               >
-                {selectedValues.size}
+                <span>{selectedValues.size}</span>
+                <span className="hidden sm:ml-1 sm:flex">selected</span>
               </Badge>
               <div className="hidden space-x-1 md:flex">
                 {selectedValues.size > 2 ? (
