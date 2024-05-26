@@ -40,7 +40,7 @@ export default function TaskLauncherButton({
               disabled={targetIps.length === 0 || pending}
               onClick={handleClick}
               className={cn(
-                "flex w-full items-center justify-between border-transparent md:h-8 md:justify-start md:border-input",
+                "flex w-full items-center justify-between border-transparent xl:h-8 xl:justify-start xl:border-input",
                 title === "Scan Ports" && "rounded-l-none",
               )}
             >
@@ -56,14 +56,14 @@ export default function TaskLauncherButton({
                 <>
                   <Separator
                     orientation="vertical"
-                    className="mx-2 hidden h-4 md:flex"
+                    className="mx-2 hidden h-4 xl:flex"
                   />
-                  <div className="flex space-x-1 md:hidden">
+                  <div className="flex space-x-1 xl:hidden">
                     <Badge variant="secondary" className="ml-2 rounded-sm px-1">
                       {targetIps.length}
                     </Badge>
                   </div>
-                  <div className="hidden space-x-1 md:flex">
+                  <div className="hidden space-x-1 xl:flex">
                     {targetIps.length > 1 ? (
                       <Badge
                         variant="secondary"

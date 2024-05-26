@@ -35,20 +35,20 @@ export default function PortScanTypeDropdown({
           variant="outline"
           size="sm"
           disabled={disabled}
-          className="z-10 rounded-r-none border-transparent md:h-8 md:border-r-0 md:border-input"
+          className="z-10 rounded-r-none border-transparent xl:h-8 xl:border-r-0 xl:border-input"
         >
-          <span className="hidden md:block">{scanTypeDetails[scanType]}</span>
-          <span className="md:hidden">Port scan type</span>
+          <span className="hidden xl:block">{scanTypeDetails[scanType]}</span>
+          <span className="xl:hidden">Port scan type</span>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         style={{
           width:
-            "calc(var(--radix-dropdown-menu-trigger-width) + 0.5rem + 1px)",
+            "calc(var(--radix-dropdown-menu-trigger-width) + 0.5rem + 2px)",
         }}
       >
-        <div className="hidden md:block">
+        <div className="hidden xl:block">
           <DropdownMenuLabel>Port scan type</DropdownMenuLabel>
           <DropdownMenuSeparator />
         </div>

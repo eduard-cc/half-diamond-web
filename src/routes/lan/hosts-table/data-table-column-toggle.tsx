@@ -27,8 +27,8 @@ export function DataTableColumnToggle<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="h-8" size="sm">
-          <span className="ml-2 sm:hidden">Columns</span>
-          <span className="ml-2 hidden sm:inline">Toggle columns</span>
+          <span className="sm:hidden">Columns</span>
+          <span className="hidden sm:inline">Toggle columns</span>
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </DropdownMenuTrigger>

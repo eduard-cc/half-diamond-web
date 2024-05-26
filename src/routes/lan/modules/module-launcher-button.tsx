@@ -56,13 +56,13 @@ export default function ModuleLauncherButton({
                   orientation="vertical"
                   className="mx-2 h-4 dark:bg-foreground"
                 />
-                <p>Stop {moduleName}</p>
+                <p>{moduleName}</p>
               </>
             ) : (
               <>
                 <Play className="h-4 w-4" />
                 <Separator orientation="vertical" className="mx-2 h-4" />
-                <p>Start {moduleName}</p>
+                <p>{moduleName}</p>
               </>
             )}
             {moduleName === "ARP Spoof" &&

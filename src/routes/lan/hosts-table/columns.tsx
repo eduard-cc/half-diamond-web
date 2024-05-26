@@ -63,24 +63,24 @@ export const columns = (
     cell: ({ row }) => {
       const isSpoofed = arpSpoofedIps.includes(row.original.ip);
       return (
-        <>
+        <div className="flex items-center">
           <CopyToClipboardButton text={row.original.ip} />
           {row.original.name && (
             <Badge
               variant={
                 row.original.name === "Gateway" ? "secondary" : "outline"
               }
-              className="ml-2"
+              className="ml-2 whitespace-nowrap"
             >
               {row.original.name}
             </Badge>
           )}
           {isSpoofed && (
-            <Badge variant="destructive" className="ml-2">
+            <Badge variant="destructive" className="ml-2 whitespace-nowrap">
               ARP Spoofed
             </Badge>
           )}
-        </>
+        </div>
       );
     },
     sortingFn: (rowA, rowB, isAsc) => {
