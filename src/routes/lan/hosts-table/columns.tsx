@@ -124,7 +124,9 @@ export const columns = (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <p className="line-clamp-1 w-fit">{row.getValue("vendor")}</p>
+                  <p className="line-clamp-1 w-fit max-w-80">
+                    {row.getValue("vendor")}
+                  </p>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>{row.getValue("vendor")}</p>
@@ -148,7 +150,7 @@ export const columns = (
                 <Button
                   variant="link"
                   size="sm"
-                  className="p-0 text-sm text-muted-foreground"
+                  className="h-5 p-0 text-sm text-muted-foreground"
                   onClick={() => detectOs([row.original.ip])}
                   disabled={osIsPending}
                 >
@@ -166,9 +168,11 @@ export const columns = (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <p className="line-clamp-1 w-fit">{row.getValue("os")}</p>
+                <p className="line-clamp-1 w-fit max-w-80">
+                  {row.getValue("os")}
+                </p>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent asChild>
                 <p>{row.getValue("os")}</p>
               </TooltipContent>
             </Tooltip>
@@ -189,7 +193,7 @@ export const columns = (
               <Button
                 variant="link"
                 size="sm"
-                className="p-0 text-sm text-muted-foreground"
+                className="h-5 p-0 text-sm text-muted-foreground"
                 onClick={() => scanPorts([row.original.ip], scanType)}
                 disabled={portsIsPending}
               >
