@@ -113,7 +113,7 @@ export function HostsTable<TData extends Host, TValue>({
             column={table.getColumn("ip")}
             title="IP"
             options={hostsOptions}
-            align="end"
+            align="center"
           />
           <DataTableColumnToggle table={table} />
         </div>

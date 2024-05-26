@@ -154,6 +154,7 @@ export function EventsTable<TData extends Event, TValue>({
             column={table.getColumn("data")}
             title="IP"
             options={hostsOptions}
+            align="center"
           />
         </div>
         {isFiltered && (
@@ -171,7 +172,7 @@ export function EventsTable<TData extends Event, TValue>({
       <div className="rounded-md border">
         <ScrollArea
           className={
-            table.getRowModel().rows?.length > 10 ? "h-[40rem]" : "h-auto"
+            table.getRowModel().rows?.length > 10 ? "h-[45rem]" : "h-auto"
           }
         >
           <Table>

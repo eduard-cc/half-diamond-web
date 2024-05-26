@@ -34,7 +34,7 @@ type FacetedFilterProps<TData, TValue> = {
     title: string;
     group: any[];
   }[];
-  align?: "start" | "end";
+  align?: "center" | "start" | "end";
 };
 
 export function FacetedFilter<TData, TValue>({
@@ -159,7 +159,7 @@ export function FacetedFilter<TData, TValue>({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8">
+        <Button variant="outline" size="sm" className="hidden h-8 sm:flex">
           <span className="hidden sm:mr-1 sm:block">Filter by</span>
           {title}
           <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -171,13 +171,13 @@ export function FacetedFilter<TData, TValue>({
               />
               <Badge
                 variant="secondary"
-                className="ml-2 rounded-sm px-1 font-normal sm:ml-0 md:hidden"
+                className="ml-2 rounded-sm px-1 font-normal sm:ml-0 lg:hidden"
               >
                 <span>{selectedValues.size}</span>
                 <span className="hidden sm:ml-1 sm:flex">selected</span>
               </Badge>
-              <div className="hidden space-x-1 md:flex">
-                {selectedValues.size > 2 ? (
+              <div className="hidden space-x-1 lg:flex">
+                {selectedValues.size > 1 ? (
                   <Badge
                     variant="secondary"
                     className="rounded-sm px-1 font-normal"
@@ -214,7 +214,7 @@ export function FacetedFilter<TData, TValue>({
                   onValueChange={setSearch}
                 />
               )}
-              <ScrollArea className="h-96" type="auto">
+              <ScrollArea className="h-60" type="auto">
                 <CommandList className="max-h-full w-full pr-2">
                   {renderCommandList()}
                 </CommandList>
