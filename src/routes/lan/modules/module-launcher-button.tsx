@@ -106,8 +106,8 @@ export default function ModuleLauncherButton({
           {moduleName === "Monitor" ? (
             <>
               <p className="mb-1 font-medium">Monitor module</p>
-              <p>Passively discovers active hosts by </p>
-              <p>sniffing ARP packets on the network.</p>
+              <p>Passively discovers active hosts on</p>
+              <p>the network by sniffing ARP packets.</p>
             </>
           ) : moduleName === "Probe" ? (
             <>
