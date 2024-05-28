@@ -1,5 +1,7 @@
 This is the web UI for netpick, a toolkit for network recon and MITM attacks. The API's repository is available [here](https://github.com/eduard-cc/netpick-api).
 
+![web UI screenshot](https://github.com/eduard-cc/netpick-api/blob/main/docs/media/screenshot.png?raw=true)
+
 ## Installation
 
 ### Using Docker
