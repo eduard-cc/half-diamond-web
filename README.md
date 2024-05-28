@@ -10,10 +10,12 @@ The easiest way to install netpick and its web UI is to use Docker.
 
 ```bash
 docker pull eduardcc/netpick
-docker run --net=host eduardcc/netpick
+docker run --privileged --net=host eduardcc/netpick
 ```
 
 The web UI will run at `http://localhost:3000` and the API at `http://localhost:8000`.
+
+**Note**: The API requires elevated privileges to function properly.
 
 ### Building from source
 
